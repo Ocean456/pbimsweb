@@ -108,13 +108,7 @@ export default defineComponent({
     },
     editDialog(row) {
       const index = this.totalData.findIndex((item) => item.address === row.address)
-      this.editRow = {
-        card_id: this.totalData[index].card_id,
-        name: this.totalData[index].name,
-        gender: this.totalData[index].gender,
-        address: this.totalData[index].address,
-        nationality: this.totalData[index].nationality
-      }
+      this.editRow = {...this.totalData[index]}
       this.edit = true
     }
   },
@@ -241,7 +235,3 @@ export default defineComponent({
   transform: translate(-50%, -50%);
 }
 </style>
-<script lang="ts" setup>
-
-
-</script>
