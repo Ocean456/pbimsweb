@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 const logFile = 'log.txt';
 
@@ -25,6 +25,28 @@ function logToFile(log) {
         }
     });
 }
+
+app.post('/api/login', (req, res) => {
+    const {username, password} = req.body;
+    const sql = 'SELECT * FROM web WHERE username = ? AND password = ?';
+    const params = [username, password];
+    connection.query(sql, params, (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('服务器内部错误');
+        } else if (result.length === 0) {
+            logToFile(`登录失败 - 用户名: ${username}`);
+            res.status(401).send('用户名或密码不正确');
+        } else {
+            const user = result[0];
+            logToFile(`登录成功 - 用户名: ${username}`);
+            res.status(200).json({
+                id: user.id,
+                username: user.username,
+            });
+        }
+    });
+});
 
 app.get('/api/search/:id?', (req, res) => {
     const id = req.params.id;
@@ -49,38 +71,37 @@ app.get('/api/search/:id?', (req, res) => {
 });
 
 app.delete('/api/delete/:id', (req, res) => {
-    const { id } = req.params;
+    const {id} = req.params;
     const sql = 'DELETE FROM information WHERE card_id=?';
     const params = [id];
 
     connection.query(sql, params, (err, result) => {
         if (err) {
             console.error(err);
-            res.status(500).json({ message: '删除失败', error: err });
+            res.status(500).json({message: '删除失败', error: err});
         } else {
             if (result.affectedRows > 0) {
-                res.json({ message: '删除成功' });
+                res.json({message: '删除成功'});
             } else {
-                res.status(404).json({ message: '删除失败：记录不存在' });
+                res.status(404).json({message: '删除失败：记录不存在'});
             }
         }
     });
-
     logToFile(`DELETE /api/delete/:id - ID: ${id}`);
 });
 
 app.post('/api/add', (req, res) => {
-    const { id, name, gender, address, nationality } = req.body;
+    const {id, name, gender, address, nationality} = req.body;
     const sql = 'INSERT INTO information (card_id, name, gender, nationality, address) VALUES (?, ?, ?, ?, ?)';
     const params = [id, name, gender, nationality, address];
 
     connection.query(sql, params, (err) => {
         if (err) {
             console.error(`添加数据失败：${err}`);
-            res.status(500).json({ message: '添加数据失败', error: err });
+            res.status(500).json({message: '添加数据失败', error: err});
         } else {
             console.log(`添加数据成功.`);
-            res.status(200).json({ message: '添加数据成功' });
+            res.status(200).json({message: '添加数据成功'});
         }
     });
 
@@ -88,21 +109,21 @@ app.post('/api/add', (req, res) => {
 });
 
 app.put('/api/edit', (req, res) => {
-    const { card_id, name, gender, address, nationality } = req.body;
+    const {card_id, name, gender, address, nationality} = req.body;
     const sql = 'UPDATE information SET name=?, gender=?, address=?, nationality=? WHERE card_id=?';
     const params = [name, gender, address, nationality, card_id];
 
     connection.query(sql, params, (err, result) => {
         if (err) {
             console.error(`编辑失败：${err}`);
-            res.status(500).json({ message: '编辑失败', error: err });
+            res.status(500).json({message: '编辑失败', error: err});
         } else {
             if (result.affectedRows > 0) {
                 console.log(`编辑成功.`);
-                res.json({ message: '编辑成功' });
+                res.json({message: '编辑成功'});
             } else {
                 console.log(`编辑失败：记录不存在.`);
-                res.status(404).json({ message: '编辑失败：记录不存在' });
+                res.status(404).json({message: '编辑失败：记录不存在'});
             }
         }
     });

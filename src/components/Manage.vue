@@ -7,6 +7,9 @@ import {ElMessage} from "element-plus";
 const api = axios.create({
   baseURL: 'http://localhost:3000/api'
 })
+const spring = axios.create({
+  baseURL: 'http://localhost:8080/api'
+})
 export default defineComponent({
   data() {
     return {
@@ -37,6 +40,7 @@ export default defineComponent({
   },
   methods: {
     async searchData() {
+      // await spring.get(`search/${this.keyword}`)
       await api.get(`search/${this.keyword}`)
           .then(response => {
             this.totalData = response.data;
@@ -139,6 +143,7 @@ export default defineComponent({
         :default-sort="{prop:'card_id',order:'descending'}"
         border height="720"
         stripe
+
         style="width: 100%;">
       <el-table-column
           label="身份证号"
@@ -233,5 +238,7 @@ export default defineComponent({
   position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
+  align-items: center;
+
 }
 </style>
