@@ -1,11 +1,5 @@
-<script lang="ts" setup>
-
-</script>
-
 <template>
-
+  <div>
+    <h3>设置</h3>
+  </div>
 </template>
-
-<style scoped>
-
-</style>

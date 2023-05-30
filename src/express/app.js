@@ -18,8 +18,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const logFile = 'log.txt';
 
-function logToFile(log) {
-    fs.appendFile(logFile, `${log}\n`, (err) => {
+function logToFile(log, ipAddress) {
+    const timestamp = new Date().toLocaleString();
+    const logMessage = `[${timestamp}] IP: ${ipAddress}, ${log}`;
+    fs.appendFile(logFile, `${logMessage}\n`, (err) => {
         if (err) {
             console.error('无法写入日志文件:', err);
         }
@@ -28,6 +30,7 @@ function logToFile(log) {
 
 app.post('/api/login', (req, res) => {
     const {username, password} = req.body;
+    const ipAddress = req.ip;
     const sql = 'SELECT * FROM web WHERE username = ? AND password = ?';
     const params = [username, password];
     connection.query(sql, params, (err, result) => {
@@ -35,11 +38,11 @@ app.post('/api/login', (req, res) => {
             console.error(err);
             res.status(500).send('服务器内部错误');
         } else if (result.length === 0) {
-            logToFile(`登录失败 - 用户名: ${username}`);
+            logToFile(`登录失败 - 用户名: ${username}`, ipAddress);
             res.status(401).send('用户名或密码不正确');
         } else {
             const user = result[0];
-            logToFile(`登录成功 - 用户名: ${username}`);
+            logToFile(`登录成功 - 用户名: ${username}`, ipAddress);
             res.status(200).json({
                 id: user.id,
                 username: user.username,
@@ -50,6 +53,7 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/search/:id?', (req, res) => {
     const id = req.params.id;
+    const ipAddress = req.ip;
     let sql = 'select card_id, name, address, gender, nationality from information';
     let params = [];
 
@@ -67,14 +71,14 @@ app.get('/api/search/:id?', (req, res) => {
         }
     });
 
-    logToFile(`GET /api/search/:id - ID: ${id || 'All'}`);
+    logToFile(`GET /api/search/:id - ID: ${id || 'All'}`, ipAddress);
 });
 
 app.delete('/api/delete/:id', (req, res) => {
     const {id} = req.params;
     const sql = 'DELETE FROM information WHERE card_id=?';
     const params = [id];
-
+    const ipAddress = req.ip;
     connection.query(sql, params, (err, result) => {
         if (err) {
             console.error(err);
@@ -87,14 +91,14 @@ app.delete('/api/delete/:id', (req, res) => {
             }
         }
     });
-    logToFile(`DELETE /api/delete/:id - ID: ${id}`);
+    logToFile(`DELETE /api/delete/:id - ID: ${id}`, ipAddress);
 });
 
 app.post('/api/add', (req, res) => {
     const {id, name, gender, address, nationality} = req.body;
     const sql = 'INSERT INTO information (card_id, name, gender, nationality, address) VALUES (?, ?, ?, ?, ?)';
     const params = [id, name, gender, nationality, address];
-
+    const ipAddress = req.ip;
     connection.query(sql, params, (err) => {
         if (err) {
             console.error(`添加数据失败：${err}`);
@@ -105,21 +109,21 @@ app.post('/api/add', (req, res) => {
         }
     });
 
-    logToFile('POST /api/add');
+    logToFile('POST /api/add', ipAddress);
 });
 
 app.put('/api/edit', (req, res) => {
     const {card_id, name, gender, address, nationality} = req.body;
     const sql = 'UPDATE information SET name=?, gender=?, address=?, nationality=? WHERE card_id=?';
     const params = [name, gender, address, nationality, card_id];
-
+    const ipAddress = req.ip;
     connection.query(sql, params, (err, result) => {
         if (err) {
             console.error(`编辑失败：${err}`);
             res.status(500).json({message: '编辑失败', error: err});
         } else {
             if (result.affectedRows > 0) {
-                console.log(`编辑成功.`);
+                console.log(`编辑${card_id}成功.`);
                 res.json({message: '编辑成功'});
             } else {
                 console.log(`编辑失败：记录不存在.`);
@@ -128,7 +132,7 @@ app.put('/api/edit', (req, res) => {
         }
     });
 
-    logToFile('PUT /api/edit');
+    logToFile('PUT /api/edit', ipAddress);
 });
 
 const baseUrl = 'http://localhost:3000/api';
@@ -143,5 +147,5 @@ app.listen(3000, () => {
     logEndpoint('/add');
     logEndpoint('/edit');
 
-    logToFile('Server started');
+    logToFile('Server started','localhost');
 });

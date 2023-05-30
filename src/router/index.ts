@@ -5,6 +5,8 @@ import Manage from "../components/Manage.vue";
 import Analysis from "../components/Analysis.vue";
 import Export from "../components/Export.vue";
 import Login from '../components/Login.vue'
+import User from '../components/User.vue'
+import Help from '../components/Help.vue'
 import store from "../store";
 import {ElMessage} from "element-plus";
 
@@ -15,6 +17,8 @@ const routes: Array<RouteRecordRaw> = [
     {path: '/analysis', component: Analysis, meta: {requiresAuth: true}},
     {path: '/export', component: Export, meta: {requiresAuth: true}},
     {path: '/login', component: Login, meta: {requiresAuth: false}},
+    {path: '/user', component: User, meta: {requiresAuth: true}},
+    {path: '/help', component: Help, meta: {requiresAuth: false}},
 ];
 
 const router: Router = createRouter({

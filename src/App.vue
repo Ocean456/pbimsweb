@@ -1,52 +1,60 @@
 <template>
   <div class="app">
     <el-menu :ellipsis="false" mode="horizontal">
-      <el-menu-item>人口基本信息管理系统</el-menu-item>
+      <el-menu-item id="logo">人口基本信息管理系统</el-menu-item>
       <div class="flex-grow"></div>
       <el-sub-menu index="#">
         <template #title>
           <el-icon>
             <User/>
           </el-icon>
-          <span>{{ username }}</span>
+          <el-text>{{ username }}</el-text>
         </template>
-        <el-menu-item index="#">个人资料</el-menu-item>
-        <el-menu-item @click="logout">退出登录</el-menu-item>
+        <el-menu-item v-if="isLoggedIn" @click="router().push('/user')">个人资料</el-menu-item>
+        <el-menu-item v-if="isLoggedIn" @click="logout">退出登录</el-menu-item>
+        <el-menu-item v-if="!isLoggedIn" @click="router().push('/login')">登录系统</el-menu-item>
       </el-sub-menu>
     </el-menu>
     <el-container class="content">
-      <el-menu class="sidebar" :default-active="$route.path" router>
+      <el-menu id="side" :default-active="$route.path" class="sidebar" router>
         <el-menu-item index="/">
           <el-icon>
             <House/>
           </el-icon>
-          <span>系统首页</span>
+          <el-text>系统首页</el-text>
         </el-menu-item>
         <el-menu-item index="/manage">
           <el-icon>
             <UserFilled/>
           </el-icon>
-          <span>身份信息</span>
+          <el-text>身份信息</el-text>
         </el-menu-item>
         <el-menu-item index="/analysis">
           <el-icon>
             <TrendCharts/>
           </el-icon>
-          <span>人口分析</span>
+          <el-text>人口统计</el-text>
         </el-menu-item>
         <el-menu-item index="/export">
           <el-icon>
             <Download/>
           </el-icon>
-          <span>信息导出</span>
+          <el-text>信息导出</el-text>
         </el-menu-item>
         <el-menu-item index="/setting">
           <el-icon>
             <Setting/>
           </el-icon>
-          <span>系统设置</span>
+          <el-text>系统设置</el-text>
+        </el-menu-item>
+        <el-menu-item index="/help">
+          <el-icon>
+            <MoreFilled></MoreFilled>
+          </el-icon>
+          <el-text>帮助支持</el-text>
         </el-menu-item>
       </el-menu>
+
       <router-view class="view"/>
     </el-container>
 
@@ -55,20 +63,31 @@
 
 <script lang="ts">
 
-import {Download, House, Setting, TrendCharts, User, UserFilled} from "@element-plus/icons-vue";
+import {Download, House, MoreFilled, Rank, Setting, TrendCharts, User, UserFilled} from "@element-plus/icons-vue";
 import {mapGetters} from "vuex";
 import router from "./router";
 import store from "./store";
 import {ElMessage} from "element-plus";
 
+// noinspection JSUnusedGlobalSymbols
 export default {
-  components: {TrendCharts, UserFilled, House, User, Download, Setting},
+  components: {MoreFilled, Rank, TrendCharts, UserFilled, House, User, Download, Setting},
   computed: {
-    ...mapGetters(["currentUser"]),
+    ...mapGetters(["currentUser", "isLoggedIn"]),
     username() {
       return this.currentUser ? this.currentUser.username : "";
     }
-  }, methods: {
+  },
+  data() {
+    return {
+      login: store.state.loggedIn
+    }
+  },
+
+  methods: {
+    router() {
+      return router
+    },
     logout() {
       store.dispatch('logout')
           .then(() => {
@@ -84,9 +103,15 @@ export default {
 </script>
 
 <style>
-.sidebar{
+#logo {
+  user-select: none;
+  pointer-events: none;
+}
+
+.sidebar {
   height: 90vh;
 }
+
 .flex-grow {
   flex-grow: 1;
 }
@@ -94,4 +119,6 @@ export default {
 .view {
   margin-left: 10%;
 }
+
+
 </style>

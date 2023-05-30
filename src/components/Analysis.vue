@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h3>分析</h3>
+  <h3>统计</h3>
 </template>
 
 <style scoped>

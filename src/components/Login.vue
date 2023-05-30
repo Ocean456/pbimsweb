@@ -31,7 +31,7 @@ export default {
   methods: {
     login() {
       if (this.username && this.password) {
-        this.$store.dispatch('login', { username: this.username, password: this.password })
+        this.$store.dispatch('login', {username: this.username, password: this.password})
             .then(() => {
               router.push('/manage');
             })
@@ -61,6 +61,7 @@ export default {
 .login-card {
   width: 400px;
   padding: 24px;
+
 }
 
 .login-title {
