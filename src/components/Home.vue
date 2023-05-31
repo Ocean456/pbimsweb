@@ -17,7 +17,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 60vw;
+  //width: 60vw;
+  margin: auto;
 }
 
 .title {

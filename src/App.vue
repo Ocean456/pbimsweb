@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <el-container>
-      <el-header>
+      <el-header v-if="MenuUI">
         <el-menu :ellipsis="false" mode="horizontal">
           <el-menu-item id="logo">人口基本信息管理系统</el-menu-item>
           <div class="flex-grow"></div>
@@ -20,86 +20,88 @@
         </el-menu>
       </el-header>
       <el-container class="content">
-        <el-menu id="side" :default-active="$route.path" class="sidebar" router>
-          <el-menu-item index="/">
-            <el-icon>
-              <House/>
-            </el-icon>
-            <el-text>系统首页</el-text>
-          </el-menu-item>
-          <el-menu-item index="/manage">
-            <el-icon>
-              <UserFilled/>
-            </el-icon>
-            <el-text>身份信息</el-text>
-          </el-menu-item>
-          <el-menu-item index="/manage">
-            <el-icon>
-              <UserFilled/>
-            </el-icon>
-            <el-text>户籍信息</el-text>
-          </el-menu-item>
-          <el-menu-item index="/manage">
-            <el-icon>
-              <UserFilled/>
-            </el-icon>
-            <el-text>居住证明</el-text>
-          </el-menu-item>
-          <el-menu-item index="/manage">
-            <el-icon>
-              <UserFilled/>
-            </el-icon>
-            <el-text>人口登记</el-text>
-          </el-menu-item>
-          <el-menu-item index="/manage">
-            <el-icon>
-              <UserFilled/>
-            </el-icon>
-            <el-text>信息查询</el-text>
-          </el-menu-item>
-          <el-menu-item index="/manage">
-            <el-icon>
-              <UserFilled/>
-            </el-icon>
-            <el-text>证件发放</el-text>
-          </el-menu-item>
-          <el-menu-item index="/analysis">
-            <el-icon>
-              <TrendCharts/>
-            </el-icon>
-            <el-text>人口统计</el-text>
-          </el-menu-item>
-          <el-menu-item index="/analysis">
-            <el-icon>
-              <TrendCharts/>
-            </el-icon>
-            <el-text>迁移管理</el-text>
-          </el-menu-item>
-          <el-menu-item index="/analysis">
-            <el-icon>
-              <TrendCharts/>
-            </el-icon>
-            <el-text>数据分析</el-text>
-          </el-menu-item>
-          <el-menu-item index="/export">
-            <el-icon>
-              <Download/>
-            </el-icon>
-            <el-text>信息导出</el-text>
-          </el-menu-item>
-          <el-menu-item index="/setting">
-            <el-icon>
-              <Setting/>
-            </el-icon>
-            <el-text>系统设置</el-text>
-          </el-menu-item>
-          <el-menu-item index="/help">
-            <el-icon>
-              <MoreFilled></MoreFilled>
-            </el-icon>
-            <el-text>帮助支持</el-text>
-          </el-menu-item>
-        </el-menu>
+        <el-aside v-if="MenuUI" width="130px">
+          <el-menu id="side" :default-active="$route.path" class="sidebar" router>
+            <el-menu-item index="/">
+              <el-icon>
+                <House/>
+              </el-icon>
+              <el-text>系统首页</el-text>
+            </el-menu-item>
+            <el-menu-item index="/manage">
+              <el-icon>
+                <UserFilled/>
+              </el-icon>
+              <el-text>身份信息</el-text>
+            </el-menu-item>
+            <el-menu-item index="/manage">
+              <el-icon>
+                <Position/>
+              </el-icon>
+              <el-text>户籍信息</el-text>
+            </el-menu-item>
+            <el-menu-item index="/manage">
+              <el-icon>
+                <Avatar/>
+              </el-icon>
+              <el-text>居住证明</el-text>
+            </el-menu-item>
+            <el-menu-item index="/manage">
+              <el-icon>
+                <Collection/>
+              </el-icon>
+              <el-text>人口登记</el-text>
+            </el-menu-item>
+            <el-menu-item index="/manage">
+              <el-icon>
+                <Search/>
+              </el-icon>
+              <el-text>信息查询</el-text>
+            </el-menu-item>
+            <el-menu-item index="/manage">
+              <el-icon>
+                <Promotion/>
+              </el-icon>
+              <el-text>证件发放</el-text>
+            </el-menu-item>
+            <el-menu-item index="/analysis">
+              <el-icon>
+                <TrendCharts/>
+              </el-icon>
+              <el-text>人口统计</el-text>
+            </el-menu-item>
+            <el-menu-item index="/analysis">
+              <el-icon>
+                <CopyDocument/>
+              </el-icon>
+              <el-text>迁移管理</el-text>
+            </el-menu-item>
+            <el-menu-item index="/analysis">
+              <el-icon>
+                <DataAnalysis/>
+              </el-icon>
+              <el-text>数据分析</el-text>
+            </el-menu-item>
+            <el-menu-item index="/export">
+              <el-icon>
+                <DocumentChecked/>
+              </el-icon>
+              <el-text>信息导出</el-text>
+            </el-menu-item>
+            <el-menu-item index="/setting">
+              <el-icon>
+                <Setting/>
+              </el-icon>
+              <el-text>系统设置</el-text>
+            </el-menu-item>
+            <el-menu-item index="/help">
+              <el-icon>
+                <MoreFilled></MoreFilled>
+              </el-icon>
+              <el-text>帮助支持</el-text>
+            </el-menu-item>
+          </el-menu>
+        </el-aside>
         <el-container>
           <el-main>
             <router-view class="view"/>
@@ -113,7 +115,18 @@
 
 <script lang="ts">
 
-import {Download, House, MoreFilled, Rank, Setting, TrendCharts, User, UserFilled} from "@element-plus/icons-vue";
+import {
+  Avatar, Collection, CopyDocument, DataAnalysis, DocumentChecked,
+  Download,
+  HomeFilled,
+  House,
+  MoreFilled, Place, Position, Promotion,
+  Rank, Search,
+  Setting,
+  TrendCharts,
+  User,
+  UserFilled
+} from "@element-plus/icons-vue";
 import {mapGetters} from "vuex";
 import router from "./router";
 import store from "./store";
@@ -121,9 +134,18 @@ import {ElMessage} from "element-plus";
 
 // noinspection JSUnusedGlobalSymbols
 export default {
-  components: {MoreFilled, Rank, TrendCharts, UserFilled, House, User, Download, Setting},
+  components: {
+    DocumentChecked,
+    Position,
+    DataAnalysis,
+    CopyDocument,
+    Place,
+    Promotion,
+    Search,
+    Collection, Avatar, HomeFilled, MoreFilled, Rank, TrendCharts, UserFilled, House, User, Download, Setting
+  },
   computed: {
-    ...mapGetters(["currentUser", "isLoggedIn"]),
+    ...mapGetters(["currentUser", "isLoggedIn", "MenuUI"]),
     username() {
       return this.currentUser ? this.currentUser.username : "";
     }
@@ -141,7 +163,7 @@ export default {
     logout() {
       store.dispatch('logout')
           .then(() => {
-            router.push('/');
+            router.push('/login');
             ElMessage({
               message: '退出成功',
               type: 'success'
@@ -168,8 +190,5 @@ export default {
 
 .view {
   margin-left: 10%;
-
 }
-
-
 </style>

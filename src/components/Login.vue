@@ -12,6 +12,9 @@
         <el-form-item>
           <el-button class="login-button" type="primary" @click="login">登录</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button class="register-button" type="info" @click="register">注册</el-button>
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -33,7 +36,7 @@ export default {
       if (this.username && this.password) {
         this.$store.dispatch('login', {username: this.username, password: this.password})
             .then(() => {
-              router.push('/manage');
+              router.push('/');
             })
             .catch(error => {
               console.error(error);
@@ -43,23 +46,33 @@ export default {
         ElMessage.warning("请输入用户名和密码");
       }
     },
+    register() {
+      router.push('/register')
+    }
   },
 };
 </script>
 
 
 <style scoped>
+* {
+  user-select: none;
+}
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  height: 80vh;
   width: 65vw;
+  margin: auto;
 }
 
 .login-card {
   width: 400px;
   padding: 24px;
+  //backdrop-filter: blur(px);
+  //background-color: rgba(255, 255, 255, 0.5);
 
 }
 
@@ -74,6 +87,11 @@ export default {
 }
 
 .login-button {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.register-button {
   width: 100%;
 }
 </style>

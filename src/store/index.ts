@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import {createStore} from 'vuex';
 import axios from 'axios';
 
 const api = axios.create({
@@ -8,7 +8,8 @@ const api = axios.create({
 export default createStore({
     state: {
         loggedIn: false,
-        user: null
+        user: null,
+        menu: false,
     },
     mutations: {
         setLoggedIn(state, loggedIn) {
@@ -16,35 +17,41 @@ export default createStore({
         },
         setUser(state, user) {
             state.user = user;
+        },
+        setMenu(state, menu) {
+            state.menu = menu;
         }
     },
     actions: {
-        login({ commit }, { username, password }) {
+        login({commit}, {username, password}) {
             return new Promise((resolve, reject) => {
                 api
-                    .post('/login', { username, password })
+                    .post('/login', {username, password})
                     .then(response => {
                         const user = response.data;
                         commit('setLoggedIn', true);
                         commit('setUser', user);
                         localStorage.setItem('user', JSON.stringify(user));
                         resolve(user);
+                        commit('setMenu', true);
                     })
                     .catch(error => {
                         reject(error);
                     });
             });
         },
-        logout({ commit }) {
+        logout({commit}) {
             localStorage.removeItem('user');
             commit('setLoggedIn', false);
             commit('setUser', null);
+            commit('setMenu', false)
         },
-        checkLogin({ commit }) {
+        checkLogin({commit}) {
             const user = localStorage.getItem('user');
             if (user) {
                 commit('setLoggedIn', true);
                 commit('setUser', JSON.parse(user));
+                commit('setMenu',true)
             }
         }
     },
@@ -54,6 +61,9 @@ export default createStore({
         },
         currentUser(state) {
             return state.user;
+        },
+        MenuUI(state) {
+            return state.menu;
         }
     }
 });
