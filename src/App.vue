@@ -1,61 +1,111 @@
 <template>
   <div class="app">
-    <el-menu :ellipsis="false" mode="horizontal">
-      <el-menu-item id="logo">人口基本信息管理系统</el-menu-item>
-      <div class="flex-grow"></div>
-      <el-sub-menu index="#">
-        <template #title>
-          <el-icon>
-            <User/>
-          </el-icon>
-          <el-text>{{ username }}</el-text>
-        </template>
-        <el-menu-item v-if="isLoggedIn" @click="router().push('/user')">个人资料</el-menu-item>
-        <el-menu-item v-if="isLoggedIn" @click="logout">退出登录</el-menu-item>
-        <el-menu-item v-if="!isLoggedIn" @click="router().push('/login')">登录系统</el-menu-item>
-      </el-sub-menu>
-    </el-menu>
-    <el-container class="content">
-      <el-menu id="side" :default-active="$route.path" class="sidebar" router>
-        <el-menu-item index="/">
-          <el-icon>
-            <House/>
-          </el-icon>
-          <el-text>系统首页</el-text>
-        </el-menu-item>
-        <el-menu-item index="/manage">
-          <el-icon>
-            <UserFilled/>
-          </el-icon>
-          <el-text>身份信息</el-text>
-        </el-menu-item>
-        <el-menu-item index="/analysis">
-          <el-icon>
-            <TrendCharts/>
-          </el-icon>
-          <el-text>人口统计</el-text>
-        </el-menu-item>
-        <el-menu-item index="/export">
-          <el-icon>
-            <Download/>
-          </el-icon>
-          <el-text>信息导出</el-text>
-        </el-menu-item>
-        <el-menu-item index="/setting">
-          <el-icon>
-            <Setting/>
-          </el-icon>
-          <el-text>系统设置</el-text>
-        </el-menu-item>
-        <el-menu-item index="/help">
-          <el-icon>
-            <MoreFilled></MoreFilled>
-          </el-icon>
-          <el-text>帮助支持</el-text>
-        </el-menu-item>
-      </el-menu>
-
-      <router-view class="view"/>
+    <el-container>
+      <el-header>
+        <el-menu :ellipsis="false" mode="horizontal">
+          <el-menu-item id="logo">人口基本信息管理系统</el-menu-item>
+          <div class="flex-grow"></div>
+          <el-sub-menu index="#">
+            <template #title>
+              <el-icon>
+                <User/>
+              </el-icon>
+              <el-text>{{ username }}</el-text>
+            </template>
+            <el-menu-item v-if="isLoggedIn" @click="router().push('/user')">个人资料</el-menu-item>
+            <el-menu-item v-if="isLoggedIn" @click="logout">退出登录</el-menu-item>
+            <el-menu-item v-if="!isLoggedIn" @click="router().push('/login')">登录系统</el-menu-item>
+            <el-menu-item v-if="!isLoggedIn" @click="router().push('/register')">账号注册</el-menu-item>
+          </el-sub-menu>
+        </el-menu>
+      </el-header>
+      <el-container class="content">
+        <el-menu id="side" :default-active="$route.path" class="sidebar" router>
+          <el-menu-item index="/">
+            <el-icon>
+              <House/>
+            </el-icon>
+            <el-text>系统首页</el-text>
+          </el-menu-item>
+          <el-menu-item index="/manage">
+            <el-icon>
+              <UserFilled/>
+            </el-icon>
+            <el-text>身份信息</el-text>
+          </el-menu-item>
+          <el-menu-item index="/manage">
+            <el-icon>
+              <UserFilled/>
+            </el-icon>
+            <el-text>户籍信息</el-text>
+          </el-menu-item>
+          <el-menu-item index="/manage">
+            <el-icon>
+              <UserFilled/>
+            </el-icon>
+            <el-text>居住证明</el-text>
+          </el-menu-item>
+          <el-menu-item index="/manage">
+            <el-icon>
+              <UserFilled/>
+            </el-icon>
+            <el-text>人口登记</el-text>
+          </el-menu-item>
+          <el-menu-item index="/manage">
+            <el-icon>
+              <UserFilled/>
+            </el-icon>
+            <el-text>信息查询</el-text>
+          </el-menu-item>
+          <el-menu-item index="/manage">
+            <el-icon>
+              <UserFilled/>
+            </el-icon>
+            <el-text>证件发放</el-text>
+          </el-menu-item>
+          <el-menu-item index="/analysis">
+            <el-icon>
+              <TrendCharts/>
+            </el-icon>
+            <el-text>人口统计</el-text>
+          </el-menu-item>
+          <el-menu-item index="/analysis">
+            <el-icon>
+              <TrendCharts/>
+            </el-icon>
+            <el-text>迁移管理</el-text>
+          </el-menu-item>
+          <el-menu-item index="/analysis">
+            <el-icon>
+              <TrendCharts/>
+            </el-icon>
+            <el-text>数据分析</el-text>
+          </el-menu-item>
+          <el-menu-item index="/export">
+            <el-icon>
+              <Download/>
+            </el-icon>
+            <el-text>信息导出</el-text>
+          </el-menu-item>
+          <el-menu-item index="/setting">
+            <el-icon>
+              <Setting/>
+            </el-icon>
+            <el-text>系统设置</el-text>
+          </el-menu-item>
+          <el-menu-item index="/help">
+            <el-icon>
+              <MoreFilled></MoreFilled>
+            </el-icon>
+            <el-text>帮助支持</el-text>
+          </el-menu-item>
+        </el-menu>
+        <el-container>
+          <el-main>
+            <router-view class="view"/>
+          </el-main>
+        </el-container>
+      </el-container>
     </el-container>
 
   </div>
@@ -118,6 +168,7 @@ export default {
 
 .view {
   margin-left: 10%;
+
 }
 
 

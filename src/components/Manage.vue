@@ -126,12 +126,12 @@ export default defineComponent({
 <template>
   <div class="info">
     <h1>信息管理界面</h1>
-    <el-input v-model="keyword" placeholder="输入" @keyup.enter="searchData">
+    <el-input v-model="keyword" placeholder="输入" style="width: 870px;" @keyup.enter="searchData">
       <template #prepend>
         <el-select v-model="select" placeholder="身份证号" style="width: 115px">
           <el-option label="身份证号" value="1"></el-option>
-          <el-option label="姓名" value="2" disabled></el-option>
-          <el-option label="地址" value="3" disabled></el-option>
+          <el-option disabled label="姓名" value="2"></el-option>
+          <el-option disabled label="地址" value="3"></el-option>
         </el-select>
       </template>
       <template #append>
@@ -144,7 +144,7 @@ export default defineComponent({
         border height="720"
         stripe
 
-        style="width: 100%;">
+        style="width: 870px;">
       <el-table-column
           label="身份证号"
           prop="card_id" sortable width="180"></el-table-column>
@@ -235,11 +235,7 @@ export default defineComponent({
 
 .p {
   margin-top: 30px;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  align-items: center;
-
+  margin-left: 20%;
 }
 
 </style>
