@@ -38,3 +38,5 @@
 [2023/5/31 00:42:29] IP: ::1, GET /api/search/:id - ID: All
 [2023/5/31 01:04:04] IP: ::1, GET /api/search/:id - ID: All
 [2023/5/31 01:06:12] IP: ::1, GET /api/search/:id - ID: All
+[2023/5/31 02:40:35] IP: localhost, Server started
+[2023/5/31 02:41:20] IP: ::1, GET /api/search/:id - ID: All

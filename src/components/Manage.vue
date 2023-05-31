@@ -130,8 +130,8 @@ export default defineComponent({
       <template #prepend>
         <el-select v-model="select" placeholder="身份证号" style="width: 115px">
           <el-option label="身份证号" value="1"></el-option>
-          <el-option label="姓名" value="2"></el-option>
-          <el-option label="地址" value="3"></el-option>
+          <el-option label="姓名" value="2" disabled></el-option>
+          <el-option label="地址" value="3" disabled></el-option>
         </el-select>
       </template>
       <template #append>
