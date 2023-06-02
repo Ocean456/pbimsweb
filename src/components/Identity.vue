@@ -25,11 +25,11 @@ export default defineComponent({
         nationality: ''
       },
       editRow: {
-        card_id: '',
+        id: '',
         name: '',
         gender: '',
         address: '',
-        nationality: ''
+        nation: ''
       },
       pageSize: 16,
       currentPage: 1,
@@ -41,7 +41,7 @@ export default defineComponent({
   methods: {
     async searchData() {
       // await spring.get(`search/${this.keyword}`)
-      await api.get(`search/${this.keyword}`)
+      await spring.get(`/identity`)
           .then(response => {
             this.totalData = response.data;
           })
@@ -126,7 +126,7 @@ export default defineComponent({
 <template>
   <div class="identity">
     <h3>身份信息管理</h3>
-    <el-input v-model="keyword" placeholder="输入" style="width: 870px;" @keyup.enter="searchData">
+    <el-input v-model="keyword" placeholder="输入" style="width: 1050px;" @keyup.enter="searchData">
       <template #prepend>
         <el-select v-model="select" placeholder="身份证号" style="width: 115px">
           <el-option label="身份证号" value="1"></el-option>
@@ -144,14 +144,16 @@ export default defineComponent({
         border height="720"
         stripe
 
-        style="width: 870px;">
+        style="width: 1050px;">
       <el-table-column
           label="身份证号"
-          prop="card_id" sortable width="180"></el-table-column>
+          prop="id" sortable width="180"></el-table-column>
       <el-table-column label="姓名" prop="name" width="100"></el-table-column>
       <el-table-column label="性别" prop="gender" width="60"></el-table-column>
+      <el-table-column label="民族" prop="nation" width="100"></el-table-column>
+      <el-table-column label="出生日期" prop="birthday" width="180"></el-table-column>
+
       <el-table-column label="地址" prop="address" width="280"></el-table-column>
-      <el-table-column label="民族" prop="nationality" width="100"></el-table-column>
       <el-table-column align="right" width="150">
         <template #header>
           <el-button text @click="dialog=true">添加</el-button>
@@ -159,7 +161,7 @@ export default defineComponent({
         <template #default="scope">
           <el-button size="small" type="primary" @click="editDialog(scope.row)">编辑</el-button>
           <!--suppress TypeScriptUnresolvedReference -->
-          <el-button size="small" type="danger" @click="deleteData(scope.row.card_id)">删除</el-button>
+          <el-button size="small" type="danger" @click="deleteData(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -197,7 +199,7 @@ export default defineComponent({
   <el-dialog v-model="edit" width="40%">
     <el-form :model="editRow" label-width="80px">
       <el-form-item label="身份证号">
-        <el-input v-model="editRow.card_id" disabled></el-input>
+        <el-input v-model="editRow.id" disabled></el-input>
       </el-form-item>
       <el-form-item label="姓名">
         <el-input v-model="editRow.name"></el-input>
@@ -209,7 +211,7 @@ export default defineComponent({
         <el-input v-model="editRow.address"></el-input>
       </el-form-item>
       <el-form-item label="民族">
-        <el-input v-model="editRow.nationality"></el-input>
+        <el-input v-model="editRow.nation"></el-input>
       </el-form-item>
     </el-form>
 

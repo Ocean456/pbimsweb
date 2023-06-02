@@ -46,6 +46,11 @@ router.beforeEach((to, from, next) => {
     const loggedIn = store.state.loggedIn;
     const requiresAuth = to.meta.requiresAuth;
 
+    if (loggedIn && to.fullPath == '/login') {
+        ElMessage.info("您已登录")
+        next('/');
+
+    }
     if (requiresAuth && !loggedIn) {
         if (from.fullPath !== '/') {
             ElMessage.warning("请先登录");

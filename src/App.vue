@@ -4,6 +4,7 @@
       <el-header v-if="MenuUI">
         <el-menu :ellipsis="false" mode="horizontal">
           <el-menu-item id="logo">人口基本信息管理系统</el-menu-item>
+          <el-menu-item v-if="!isLoggedIn" @click="router().push('/login')">登录系统</el-menu-item>
           <div class="flex-grow"></div>
           <el-sub-menu index="#">
             <template #title>
@@ -12,10 +13,8 @@
               </el-icon>
               <el-text>{{ username }}</el-text>
             </template>
-            <el-menu-item v-if="isLoggedIn" @click="router().push('/user')">个人资料</el-menu-item>
-            <el-menu-item v-if="isLoggedIn" @click="logout">退出登录</el-menu-item>
-            <el-menu-item v-if="!isLoggedIn" @click="router().push('/login')">登录系统</el-menu-item>
-            <el-menu-item v-if="!isLoggedIn" @click="router().push('/register')">账号注册</el-menu-item>
+            <el-menu-item @click="router().push('/user')">个人资料</el-menu-item>
+            <el-menu-item @click="logout">退出登录</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-header>
@@ -170,6 +169,11 @@ export default {
             })
           })
     }
+  },
+  mounted() {
+    if (this.isLoggedIn){
+      document.body.style.backgroundImage = "none"
+    }
   }
 }
 </script>
@@ -191,4 +195,5 @@ export default {
 .view {
   margin-left: 10%;
 }
+
 </style>

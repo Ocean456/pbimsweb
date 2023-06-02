@@ -29,8 +29,7 @@ export default createStore({
     actions: {
         login({commit}, {username, password}) {
             return new Promise((resolve, reject) => {
-                api
-                    .post('/login', {username, password})
+                api.post('/login', {username, password})
                     .then(response => {
                         const user = response.data;
                         const authority = response.data;
