@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <el-container>
-      <el-header v-if="MenuUI">
+      <el-header v-if="MenuUI" class="headMenu">
         <el-menu :ellipsis="false" mode="horizontal">
           <el-menu-item id="logo">人口基本信息管理系统</el-menu-item>
           <el-menu-item v-if="!isLoggedIn" @click="router().push('/login')">登录系统</el-menu-item>
@@ -108,7 +108,6 @@
         </el-container>
       </el-container>
     </el-container>
-
   </div>
 </template>
 
@@ -171,9 +170,7 @@ export default {
     }
   },
   mounted() {
-    if (this.isLoggedIn){
-      document.body.style.backgroundImage = "none"
-    }
+    document.getElementById("app").style.backgroundImage = "none"
   }
 }
 </script>
@@ -196,4 +193,10 @@ export default {
   margin-left: 10%;
 }
 
+
+</style>
+<style scoped>
+.headMenu{
+  padding: 0;
+}
 </style>

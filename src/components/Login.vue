@@ -39,7 +39,6 @@ export default {
       if (this.username && this.password) {
         this.$store.dispatch('login', {username: this.username, password: this.password})
             .then(() => {
-
               router.push('/');
             })
             .catch(error => {
@@ -64,6 +63,9 @@ export default {
           });
     }
   },
+  mounted() {
+    document.body.style.backgroundImage = 'url("public/back.png")'
+  }
 };
 </script>
 
@@ -108,10 +110,10 @@ export default {
   width: 100%;
 }
 
+
 </style>
 <style>
 body {
-  background-image: url("public/ab.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;

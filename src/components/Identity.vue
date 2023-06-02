@@ -143,25 +143,33 @@ export default defineComponent({
         :default-sort="{prop:'card_id',order:'descending'}"
         border height="720"
         stripe
-
         style="width: 1050px;">
       <el-table-column
           label="身份证号"
-          prop="id" sortable width="180"></el-table-column>
+          prop="id" sortable style="padding: 0" width="180"></el-table-column>
       <el-table-column label="姓名" prop="name" width="100"></el-table-column>
       <el-table-column label="性别" prop="gender" width="60"></el-table-column>
       <el-table-column label="民族" prop="nation" width="100"></el-table-column>
       <el-table-column label="出生日期" prop="birthday" width="180"></el-table-column>
 
       <el-table-column label="地址" prop="address" width="280"></el-table-column>
-      <el-table-column align="right" width="150">
+      <el-table-column align="center" width="150">
         <template #header>
           <el-button text @click="dialog=true">添加</el-button>
         </template>
         <template #default="scope">
           <el-button size="small" type="primary" @click="editDialog(scope.row)">编辑</el-button>
           <!--suppress TypeScriptUnresolvedReference -->
-          <el-button size="small" type="danger" @click="deleteData(scope.row.id)">删除</el-button>
+          <el-popconfirm
+              cancel-button-text="取消"
+              confirm-button-text="确认"
+              title="确认删除吗？"
+              @confirm="deleteData(scope.row.id)"
+          >
+            <template #reference>
+              <el-button size="small" type="danger">删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
