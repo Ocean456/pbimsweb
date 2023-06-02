@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h3>设置</h3>
+    <h3>系统设置</h3>
   </div>
 </template>

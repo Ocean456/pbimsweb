@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div class="user">
-    <h3>用户资料</h3>
+  <div class="search">
+    <h3>信息查询</h3>
   </div>
 </template>
 

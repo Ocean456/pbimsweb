@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div class="user">
-    <h3>用户资料</h3>
+  <div class="statistics">
+    <h3>人口统计</h3>
   </div>
 </template>
 

@@ -2,7 +2,7 @@ import {createStore} from 'vuex';
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api'
+    baseURL: 'http://localhost:8080/api'
 });
 
 export default createStore({
@@ -10,6 +10,7 @@ export default createStore({
         loggedIn: false,
         user: null,
         menu: false,
+        authority: 0,
     },
     mutations: {
         setLoggedIn(state, loggedIn) {
@@ -20,6 +21,9 @@ export default createStore({
         },
         setMenu(state, menu) {
             state.menu = menu;
+        },
+        setAuthority(state, authority) {
+            state.authority = authority;
         }
     },
     actions: {
@@ -29,11 +33,14 @@ export default createStore({
                     .post('/login', {username, password})
                     .then(response => {
                         const user = response.data;
+                        const authority = response.data;
                         commit('setLoggedIn', true);
                         commit('setUser', user);
-                        localStorage.setItem('user', JSON.stringify(user));
                         resolve(user);
                         commit('setMenu', true);
+                        commit('setAuthority', authority);
+                        localStorage.setItem('user', JSON.stringify(user));
+                        localStorage.setItem('authority', JSON.stringify(authority));
                     })
                     .catch(error => {
                         reject(error);
@@ -48,10 +55,12 @@ export default createStore({
         },
         checkLogin({commit}) {
             const user = localStorage.getItem('user');
+            const authority = localStorage.getItem('authority');
             if (user) {
                 commit('setLoggedIn', true);
                 commit('setUser', JSON.parse(user));
-                commit('setMenu',true)
+                commit('setMenu', true)
+                commit('setAuthority', authority)
             }
         }
     },

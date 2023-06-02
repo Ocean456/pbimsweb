@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div class="user">
-    <h3>用户资料</h3>
+  <div class="domicile">
+    <h3>户籍信息管理</h3>
   </div>
 </template>
 

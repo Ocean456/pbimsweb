@@ -28,49 +28,49 @@
               </el-icon>
               <el-text>系统首页</el-text>
             </el-menu-item>
-            <el-menu-item index="/manage">
+            <el-menu-item index="/identity">
               <el-icon>
                 <UserFilled/>
               </el-icon>
               <el-text>身份信息</el-text>
             </el-menu-item>
-            <el-menu-item index="/manage">
+            <el-menu-item index="/domicile">
               <el-icon>
                 <Position/>
               </el-icon>
               <el-text>户籍信息</el-text>
             </el-menu-item>
-            <el-menu-item index="/manage">
+            <el-menu-item index="/certify">
               <el-icon>
                 <Avatar/>
               </el-icon>
               <el-text>居住证明</el-text>
             </el-menu-item>
-            <el-menu-item index="/manage">
+            <el-menu-item index="/population">
               <el-icon>
                 <Collection/>
               </el-icon>
               <el-text>人口登记</el-text>
             </el-menu-item>
-            <el-menu-item index="/manage">
+            <el-menu-item index="/search">
               <el-icon>
                 <Search/>
               </el-icon>
               <el-text>信息查询</el-text>
             </el-menu-item>
-            <el-menu-item index="/manage">
+            <el-menu-item index="/issue">
               <el-icon>
                 <Promotion/>
               </el-icon>
               <el-text>证件发放</el-text>
             </el-menu-item>
-            <el-menu-item index="/analysis">
+            <el-menu-item index="/statistics">
               <el-icon>
                 <TrendCharts/>
               </el-icon>
               <el-text>人口统计</el-text>
             </el-menu-item>
-            <el-menu-item index="/analysis">
+            <el-menu-item index="/migrate">
               <el-icon>
                 <CopyDocument/>
               </el-icon>

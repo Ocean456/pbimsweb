@@ -124,8 +124,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="info">
-    <h1>信息管理界面</h1>
+  <div class="identity">
+    <h3>身份信息管理</h3>
     <el-input v-model="keyword" placeholder="输入" style="width: 870px;" @keyup.enter="searchData">
       <template #prepend>
         <el-select v-model="select" placeholder="身份证号" style="width: 115px">
@@ -221,7 +221,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.info {
+.identity {
   margin-left: 10%;
 }
 
