@@ -8,7 +8,7 @@ const api = axios.create({
   baseURL: 'http://localhost:3000/api'
 })
 const spring = axios.create({
-  baseURL: 'http://localhost:8080/api'
+  baseURL: 'http://localhost:8080/api/identity'
 })
 export default defineComponent({
   data() {
@@ -41,17 +41,17 @@ export default defineComponent({
   methods: {
     async searchData() {
       // await spring.get(`search/${this.keyword}`)
-      await spring.get(`/identity`)
+      await spring.get(`/search`)
           .then(response => {
             this.totalData = response.data;
           })
       this.getPageData()
     },
     deleteData(id) {
-      api.delete(`/delete/${id}`)
-          .then(response => {
+      spring.delete('/delete', {data: {id: id}})
+          .then(() => {
             ElMessage({
-              message: response.data.message,
+              message: "删除成功",
               type: 'success'
             })
             this.searchData();

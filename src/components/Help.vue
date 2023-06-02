@@ -2,7 +2,7 @@
 export default {
   methods: {
     help() {
-      window.location.replace("https://qm.qq.com/cgi-bin/qm/qr?k=bZch7LePlI2qiBeEsgDZe5t4UCv0fN9l&noverify=0&personal_qrcode_source=4")
+      window.location.replace("tencent://message/?uin=1624133013&Site=&Menu=yes")
     }
   }
 }
