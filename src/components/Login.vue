@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    document.body.style.backgroundImage = 'url("public/back.png")'
+    document.body.style.backgroundImage = 'url("public/wave.svg")'
   }
 };
 </script>
@@ -117,5 +117,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+
 }
+
 </style>

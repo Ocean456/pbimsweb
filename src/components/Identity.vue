@@ -21,15 +21,17 @@ export default defineComponent({
         id: '',
         name: '',
         gender: '',
-        address: '',
-        nationality: ''
+        nation: '',
+        birthday: new Date(),
+        address: ''
       },
       editRow: {
         id: '',
         name: '',
         gender: '',
         address: '',
-        nation: ''
+        nation: '',
+        birthday: new Date()
       },
       pageSize: 16,
       currentPage: 1,
@@ -40,7 +42,6 @@ export default defineComponent({
   },
   methods: {
     async searchData() {
-      // await spring.get(`search/${this.keyword}`)
       await spring.get(`/search`)
           .then(response => {
             this.totalData = response.data;
@@ -49,9 +50,9 @@ export default defineComponent({
     },
     deleteData(id) {
       spring.delete('/delete', {data: {id: id}})
-          .then(() => {
+          .then(response => {
             ElMessage({
-              message: "删除成功",
+              message: response.data,
               type: 'success'
             })
             this.searchData();
@@ -64,29 +65,35 @@ export default defineComponent({
           })
       this.handleCurrentChange(this.currentPage)
     },
-    addData() {
-      api.post('/add', this.add)
-          .then(response => {
-            ElMessage({
-              message: response.data.message,
-              type: 'success'
+    async addData() {
+      if (this.add.id != '' && this.add.gender != '' && this.add.nation != '' && this.add.address != '') {
+        await spring.post('/add', this.add)
+            .then(response => {
+              ElMessage({
+                message: response.data,
+                type: 'success'
+              })
             })
-          })
-          .catch(error => {
-            ElMessage({
-              message: error,
-              type: 'warning'
+            .catch(error => {
+              ElMessage({
+                message: error,
+                type: 'warning'
+              })
             })
-          })
-      this.searchData();
-      this.dialog = false
-      this.handleCurrentChange(this.currentPage)
+        await this.searchData();
+        this.add = {address: "", gender: "", id: "", name: "", nation: "", birthday: new Date()}
+        this.dialog = false
+        this.handleCurrentChange(this.currentPage)
+      } else {
+        ElMessage.error("请完成表单")
+      }
+
     },
     async editData() {
-      await api.put('/edit', this.editRow)
+      await spring.put('/edit', this.editRow)
           .then(response => {
             ElMessage({
-              message: response.data.message,
+              message: response.data,
               type: 'success'
             })
           })
@@ -151,7 +158,6 @@ export default defineComponent({
       <el-table-column label="性别" prop="gender" width="60"></el-table-column>
       <el-table-column label="民族" prop="nation" width="100"></el-table-column>
       <el-table-column label="出生日期" prop="birthday" width="180"></el-table-column>
-
       <el-table-column label="地址" prop="address" width="280"></el-table-column>
       <el-table-column align="center" width="150">
         <template #header>
@@ -183,21 +189,31 @@ export default defineComponent({
   </div>
 
   <el-dialog v-model="dialog" title="添加" width="40%">
-    <el-input v-model="add.id">
-      <template #prepend>身份证号</template>
-    </el-input>
-    <el-input v-model="add.name" class="input">
-      <template #prepend>姓名</template>
-    </el-input>
-    <el-input v-model="add.gender" class="input">
-      <template #prepend>性别</template>
-    </el-input>
-    <el-input v-model="add.address" class="input">
-      <template #prepend>地址</template>
-    </el-input>
-    <el-input v-model="add.nationality" class="input">
-      <template #prepend>民族</template>
-    </el-input>
+    <el-form :model="add" label-width="80px">
+      <el-form-item label="身份证号">
+        <el-input v-model="add.id" placeholder="请输入身份证号"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名">
+        <el-input v-model="add.name" placeholder="请输入姓名"></el-input>
+      </el-form-item>
+
+      <el-form-item label="性别">
+        <el-select v-model="add.gender" placeholder="请选择性别" style="width: 100%;">
+          <el-option label="男" value="1"></el-option>
+          <el-option label="女" value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="民族">
+        <el-input v-model="add.nation" placeholder="请输入民族"></el-input>
+      </el-form-item>
+      <el-form-item label="出生日期">
+        <el-date-picker v-model="add.birthday" style="width: 100%;" type="date"></el-date-picker>
+      </el-form-item>
+      <el-form-item label="地址">
+        <el-input v-model="add.address" placeholder="请输入地址"></el-input>
+      </el-form-item>
+
+    </el-form>
     <template #footer>
       <el-button class="button" @click="dialog = false">取消</el-button>
       <el-button class="button" type="primary" @click="addData">添加</el-button>
@@ -215,12 +231,17 @@ export default defineComponent({
       <el-form-item label="性别">
         <el-input v-model="editRow.gender"></el-input>
       </el-form-item>
-      <el-form-item label="地址">
-        <el-input v-model="editRow.address"></el-input>
-      </el-form-item>
       <el-form-item label="民族">
         <el-input v-model="editRow.nation"></el-input>
       </el-form-item>
+      <el-form-item label="出生日期">
+        <el-date-picker v-model="editRow.birthday" style="width: 100%;" type="date"></el-date-picker>
+      </el-form-item>
+      <el-form-item label="地址">
+        <el-input v-model="editRow.address"></el-input>
+      </el-form-item>
+
+
     </el-form>
 
     <template #footer>
@@ -235,9 +256,6 @@ export default defineComponent({
   margin-left: 10%;
 }
 
-.input {
-  margin-top: 15px;
-}
 
 .button {
   margin-top: 10px;

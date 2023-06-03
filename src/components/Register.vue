@@ -1,17 +1,97 @@
-<script lang="ts" setup>
+<script lang="ts">
+import axios from "axios";
+import router from "../router";
 
+const api = axios.create({
+  baseURL: 'http://localhost:8080/api'
+})
+export default {
+  data() {
+    return {
+      form: {
+        username: '',
+        password: '',
+        again: '',
+        id: ''
+      }
+    }
+  },
+  methods: {
+    register() {
+      if (this.form.username && this.form.password && this.form.password == this.form.again && this.form.id) {
+
+      }
+    },
+    back() {
+      router.push('/login')
+    }
+  },
+  mounted() {
+    document.body.style.backgroundImage = 'url("public/wave.svg")'
+  }
+
+}
 </script>
 
 <template>
   <div class="register">
-    <h3>
-      注册
-    </h3>
+    <el-card class="registerCard">
+      <h1>注册</h1>
+      <el-form class="form" label-width="80px">
+        <el-form-item label="用户名">
+          <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="form.password" placeholder="请输入密码" @keyup.enter="register"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="password">
+          <el-input v-model="form.again" placeholder="请再次输入密码" @keyup.enter="register"></el-input>
+        </el-form-item>
+
+        <el-form-item label="身份证号">
+          <el-input v-model="form.id" placeholder="请输入身份证号"></el-input>
+        </el-form-item>
+      </el-form>
+      <div style="display: flex">
+        <el-button class="leftButton" @click="back">返回登录</el-button>
+        <div class="flex-grow"></div>
+        <el-button class="rightButton" type="primary">注册</el-button>
+      </div>
+    </el-card>
   </div>
 </template>
 
 <style scoped>
-h3{
+h1 {
   user-select: none;
+  text-align: center;
+  font-size: 25px;
+}
+
+.register {
+  margin: auto;
+  width: 500px;
+}
+
+.form {
+  margin: auto 0;
+}
+
+.registerCard {
+  margin-top: 40%;
+  backdrop-filter: blur(0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+.leftButton {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.rightButton {
+  margin-top: 5%;
+
+  margin-right: 10%;
 }
 </style>

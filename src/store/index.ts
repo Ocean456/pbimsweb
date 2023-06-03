@@ -40,7 +40,7 @@ export default createStore({
                         commit('setAuthority', authority);
                         localStorage.setItem('user', JSON.stringify(user));
                         localStorage.setItem('authority', JSON.stringify(authority));
-                        document.body.style.backgroundImage='none'
+                        document.body.style.backgroundImage = 'none'
                     })
                     .catch(error => {
                         reject(error);
