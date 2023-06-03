@@ -1,5 +1,6 @@
 import {createStore} from 'vuex';
 import axios from 'axios';
+import router from "../router";
 
 const api = axios.create({
     baseURL: 'http://localhost:8080/api'
@@ -8,9 +9,11 @@ const api = axios.create({
 export default createStore({
     state: {
         loggedIn: false,
-        user: null,
+        user: {
+            username: '',
+            authority: 0,
+        },
         menu: false,
-        authority: 0,
     },
     mutations: {
         setLoggedIn(state, loggedIn) {
@@ -21,9 +24,6 @@ export default createStore({
         },
         setMenu(state, menu) {
             state.menu = menu;
-        },
-        setAuthority(state, authority) {
-            state.authority = authority;
         }
     },
     actions: {
@@ -32,14 +32,14 @@ export default createStore({
                 api.post('/login', {username, password})
                     .then(response => {
                         const user = response.data;
-                        const authority = response.data;
                         commit('setLoggedIn', true);
                         commit('setUser', user);
                         resolve(user);
-                        commit('setMenu', true);
-                        commit('setAuthority', authority);
+                        if (user.authority == 1) {
+                            commit('setMenu', true)
+                        }
                         localStorage.setItem('user', JSON.stringify(user));
-                        localStorage.setItem('authority', JSON.stringify(authority));
+                        localStorage.setItem('authority', JSON.stringify(user.authority));
                         document.body.style.backgroundImage = 'none'
                     })
                     .catch(error => {
@@ -50,17 +50,22 @@ export default createStore({
         logout({commit}) {
             localStorage.removeItem('user');
             commit('setLoggedIn', false);
-            commit('setUser', null);
+            commit('setUser', {
+                username: null,
+                authority: 0,
+            });
             commit('setMenu', false)
+            router.push('/login')
         },
-        checkLogin({commit}) {
+        checkLogin({commit, state}) {
             const user = localStorage.getItem('user');
-            const authority = localStorage.getItem('authority');
+            // const authority = localStorage.getItem('authority');
             if (user) {
                 commit('setLoggedIn', true);
                 commit('setUser', JSON.parse(user));
-                commit('setMenu', true)
-                commit('setAuthority', authority)
+                if (state.user.authority == 1) {
+                    commit('setMenu', true);
+                }
             }
         }
     },

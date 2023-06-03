@@ -13,7 +13,6 @@
               </el-icon>
               <el-text>{{ username }}</el-text>
             </template>
-            <el-menu-item @click="router().push('/user')">个人资料</el-menu-item>
             <el-menu-item @click="logout">退出登录</el-menu-item>
           </el-sub-menu>
         </el-menu>

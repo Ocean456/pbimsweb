@@ -45,7 +45,16 @@ const router: Router = createRouter({
 router.beforeEach((to, from, next) => {
     const loggedIn = store.state.loggedIn;
     const requiresAuth = to.meta.requiresAuth;
+    const authority = store.state.user.authority;
+    console.log(authority)
 
+    if (loggedIn && authority == 0 && to.fullPath != '/user') {
+        next('/user')
+    }
+
+    if (authority == 1 && to.fullPath == '/user') {
+        next('/')
+    }
     if (loggedIn && to.fullPath == '/login') {
         ElMessage.info("您已登录")
         next('/');

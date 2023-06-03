@@ -1,6 +1,7 @@
 <script lang="ts">
 import axios from "axios";
 import router from "../router";
+import {ElMessage} from "element-plus";
 
 const api = axios.create({
   baseURL: 'http://localhost:8080/api'
@@ -19,7 +20,21 @@ export default {
   methods: {
     register() {
       if (this.form.username && this.form.password && this.form.password == this.form.again && this.form.id) {
-
+        api.post('/register', {
+          id: this.form.id,
+          username: this.form.username,
+          password: this.form.password
+        }).then(response => {
+          ElMessage({
+            type: "success",
+            message: response.data
+          })
+        }).catch(error => {
+          ElMessage({
+            type: "error",
+            message: error
+          })
+        })
       }
     },
     back() {
@@ -42,10 +57,10 @@ export default {
           <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码" @keyup.enter="register"></el-input>
+          <el-input v-model="form.password" placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password">
-          <el-input v-model="form.again" placeholder="请再次输入密码" @keyup.enter="register"></el-input>
+          <el-input v-model="form.again" placeholder="请再次输入密码"></el-input>
         </el-form-item>
 
         <el-form-item label="身份证号">
@@ -55,7 +70,7 @@ export default {
       <div style="display: flex">
         <el-button class="leftButton" @click="back">返回登录</el-button>
         <div class="flex-grow"></div>
-        <el-button class="rightButton" type="primary">注册</el-button>
+        <el-button class="rightButton" @click="register" type="primary">注册</el-button>
       </div>
     </el-card>
   </div>
