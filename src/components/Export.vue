@@ -11,7 +11,7 @@ import Papa from 'papaparse';
 import {ElMessage} from "element-plus";
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'http://localhost:8080'
 })
 export default {
   data() {
@@ -22,19 +22,20 @@ export default {
   methods: {
     async exportData() {
       this.loading = true
-      await api.get('/api/search')
+      await api.get('/api/identity/search')
           .then(response => {
             const data = response.data;
             const csv = Papa.unparse(data);
-            const blob = new Blob([csv], {type: 'text/csv;charset=ANSI;'});
+            const blob = new Blob([csv], {type: 'text/csv;charset=UTF-8;'});
             const downloadLink = document.createElement('a');
             downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = 'export.csv';
+            downloadLink.download = 'export.txt';
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
             this.loading = false
-          }).catch(error => {
+          }).
+          catch(error => {
             ElMessage.error(error)
           })
     }
