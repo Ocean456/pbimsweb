@@ -46,7 +46,6 @@ router.beforeEach((to, from, next) => {
     const loggedIn = store.state.loggedIn;
     const requiresAuth = to.meta.requiresAuth;
     const authority = store.state.user.authority;
-    console.log(authority)
 
     if (loggedIn && authority == 0 && to.fullPath != '/user') {
         next('/user')
