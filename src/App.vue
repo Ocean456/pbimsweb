@@ -86,17 +86,17 @@
               </el-icon>
               <el-text>信息导出</el-text>
             </el-menu-item>
-            <el-menu-item index="/setting">
-              <el-icon>
-                <Setting/>
-              </el-icon>
-              <el-text>系统设置</el-text>
-            </el-menu-item>
             <el-menu-item index="/help">
               <el-icon>
                 <MoreFilled></MoreFilled>
               </el-icon>
               <el-text>帮助支持</el-text>
+            </el-menu-item>
+            <el-menu-item index="/setting">
+              <el-icon>
+                <Setting/>
+              </el-icon>
+              <el-text>系统设置</el-text>
             </el-menu-item>
           </el-menu>
         </el-aside>
