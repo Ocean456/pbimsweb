@@ -16,7 +16,10 @@
           <el-button class="register-button" type="info" @click="register">注册</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button class="register-button" type="info" @click="test">测试</el-button>
+          <el-button class="register-button" type="info" @click="test">管理</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="register-button" type="info" @click="resident">居民</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -54,6 +57,15 @@ export default {
     },
     test() {
       this.$store.dispatch('login', {username: 'root', password: '1234'})
+          .then(() => {
+            router.push('/');
+          })
+          .catch(error => {
+            console.error(error);
+            ElMessage.warning("账号或密码错误");
+          });
+    }, resident() {
+      this.$store.dispatch('login', {username: '1234', password: '1234'})
           .then(() => {
             router.push('/');
           })
