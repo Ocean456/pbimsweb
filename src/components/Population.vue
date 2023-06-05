@@ -40,10 +40,7 @@ export default {
           <el-form-item label="出生日期：">
             <el-date-picker style="width: 100%"></el-date-picker>
           </el-form-item>
-          <el-form-item label="地区：">
-            <el-select style="width: 100%"></el-select>
-          </el-form-item>
-          <el-form-item label="详细地址：">
+          <el-form-item label="地址：">
             <el-input></el-input>
           </el-form-item>
         </el-form>
@@ -64,6 +61,9 @@ export default {
           </el-form-item>
           <el-form-item label="职业">
             <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="婚姻状况：">
+            <el-select style="width: 100%;"></el-select>
           </el-form-item>
         </el-form>
       </el-card>

@@ -32,7 +32,7 @@ export default {
         }).catch(error => {
           ElMessage({
             type: "error",
-            message: error
+            message: error.response.data
           })
         })
       }

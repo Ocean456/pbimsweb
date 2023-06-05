@@ -133,7 +133,7 @@ export default defineComponent({
 <template>
   <div class="identity">
     <h3>身份信息管理</h3>
-    <el-input v-model="keyword" placeholder="输入" style="width: 1050px;" @keyup.enter="searchData">
+    <el-input v-model="keyword" placeholder="输入" style="width: 100%; max-width: 1050px" @keyup.enter="searchData">
       <template #prepend>
         <el-select v-model="select" placeholder="身份证号" style="width: 115px">
           <el-option label="身份证号" value="1"></el-option>
@@ -183,7 +183,7 @@ export default defineComponent({
         :current-page="currentPage" :page-size="pageSize"
         :total="total"
         class="p"
-        layout="total,prev,pager,next,jumper"
+        layout="prev,pager,next,jumper"
         @current-change="handleCurrentChange">
     </el-pagination>
   </div>
@@ -264,6 +264,7 @@ export default defineComponent({
 .p {
   margin-top: 30px;
   margin-left: 20%;
+
 }
 
 </style>

@@ -77,7 +77,7 @@ export default {
                   type="date"
               />
             </el-form-item>
-            <el-form-item label="详细地址">
+            <el-form-item label="地址">
               <el-input v-model="address" style="width: 90%; "></el-input>
             </el-form-item>
           </el-form>
