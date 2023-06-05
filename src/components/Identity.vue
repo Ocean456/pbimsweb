@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, ref} from "vue";
+import {defineComponent} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
@@ -14,7 +14,7 @@ export default defineComponent({
   data() {
     return {
       keyword: '',
-      select: ref(''),
+      select: 'id',
       totalData: [],
       pageData: [],
       add: {
@@ -41,8 +41,15 @@ export default defineComponent({
     }
   },
   methods: {
-    async searchData() {
+    async loadingData() {
       await spring.get(`/search`)
+          .then(response => {
+            this.totalData = response.data;
+          })
+      this.getPageData()
+    },
+    async searchData() {
+      await spring.get(`/search`,{params:{type:this.select,index:this.keyword}})
           .then(response => {
             this.totalData = response.data;
           })
@@ -124,7 +131,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.searchData()
+    this.loadingData()
   }
 })
 
@@ -135,10 +142,10 @@ export default defineComponent({
     <h3>身份信息管理</h3>
     <el-input v-model="keyword" placeholder="输入" style="width: 100%; max-width: 1050px" @keyup.enter="searchData">
       <template #prepend>
-        <el-select v-model="select" placeholder="身份证号" style="width: 115px">
-          <el-option label="身份证号" value="1"></el-option>
-          <el-option disabled label="姓名" value="2"></el-option>
-          <el-option disabled label="地址" value="3"></el-option>
+        <el-select v-model="select"  style="width: 115px">
+          <el-option label="身份证号" value="id"></el-option>
+          <el-option  label="姓名" value="name"></el-option>
+          <el-option  label="地址" value="address"></el-option>
         </el-select>
       </template>
       <template #append>

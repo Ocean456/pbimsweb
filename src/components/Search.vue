@@ -15,7 +15,7 @@
       </el-form-item>
     </el-form>
     <el-card class="info" shadow="none">
-      <el-skeleton :rows="10"></el-skeleton>
+      <el-skeleton animated :rows="10"></el-skeleton>
     </el-card>
   </div>
 </template>
