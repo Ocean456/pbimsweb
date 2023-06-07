@@ -7,7 +7,7 @@
           <el-input v-model="username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="password" placeholder="请输入密码" @keyup.enter="login"></el-input>
+          <el-input v-model="password" placeholder="请输入密码" show-password @keyup.enter="login"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button class="login-button" type="primary" @click="login">登录</el-button>
@@ -46,7 +46,7 @@ export default {
             })
             .catch(error => {
               console.error(error);
-              ElMessage.warning("账号或密码错误");
+              ElMessage.warning(error);
             });
       } else {
         ElMessage.warning("请输入用户名和密码");
@@ -99,8 +99,6 @@ export default {
 .login-card {
   width: 400px;
   padding: 24px;
-  backdrop-filter: blur(px);
-  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .login-title {

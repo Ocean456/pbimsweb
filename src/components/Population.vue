@@ -1,11 +1,45 @@
 <script lang="ts">
+import axios from "axios";
+import {ElMessage} from "element-plus";
+
+const spring = axios.create({
+  baseURL: 'http://localhost:8080/api/all'
+})
 export default {
   data() {
-    return {}
+    return {
+      submit: {
+        id: '',
+        name: '',
+        gender: '男',
+        nation: '',
+        birthday: new Date(),
+        address: '',
+        former: '',
+        origin: '',
+        birthplace: '',
+        education: '',
+        career: '',
+        marital: '未婚',
+        period: new Date()
+      }
+    }
   },
   methods: {
-    loading() {
-
+    submitData() {
+      spring.post('/add', this.submit)
+          .then(response => {
+            ElMessage({
+              type: "success",
+              message: response.data
+            })
+          })
+          .catch(error => {
+            ElMessage({
+              message: error,
+              type: 'warning'
+            })
+          })
     }
   },
   mounted() {
@@ -23,25 +57,25 @@ export default {
         </template>
         <el-form :label-position="'left'" label-width="90px">
           <el-form-item label="身份证号：">
-            <el-input></el-input>
+            <el-input v-model="submit.id"></el-input>
           </el-form-item>
           <el-form-item label="姓名：">
-            <el-input></el-input>
+            <el-input v-model="submit.name"></el-input>
           </el-form-item>
-          <el-form-item label="性别：">
-            <el-select style="width: 100%;">
-              <el-option>男</el-option>
-              <el-option>女</el-option>
+          <el-form-item label="性别">
+            <el-select v-model="submit.gender" style="width: 100%;">
+              <el-option label="男" value="男"></el-option>
+              <el-option label="女" value="女"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="民族：">
-            <el-input></el-input>
+            <el-input v-model="submit.nation"></el-input>
           </el-form-item>
           <el-form-item label="出生日期：">
-            <el-date-picker style="width: 100%"></el-date-picker>
+            <el-date-picker v-model="submit.birthday" style="width: 100%"></el-date-picker>
           </el-form-item>
           <el-form-item label="地址：">
-            <el-input></el-input>
+            <el-input v-model="submit.address"></el-input>
           </el-form-item>
         </el-form>
       </el-card>
@@ -51,19 +85,25 @@ export default {
         </template>
         <el-form :label-position="'left'" label-width="90px">
           <el-form-item label="曾用名：">
-            <el-input></el-input>
+            <el-input v-model="submit.former"></el-input>
           </el-form-item>
           <el-form-item label="籍贯：">
-            <el-input></el-input>
+            <el-input v-model="submit.origin"></el-input>
+          </el-form-item>
+          <el-form-item label="出生地：">
+            <el-input v-model="submit.birthplace"></el-input>
           </el-form-item>
           <el-form-item label="教育程度：">
-            <el-input></el-input>
+            <el-input v-model="submit.education"></el-input>
           </el-form-item>
           <el-form-item label="职业">
-            <el-input></el-input>
+            <el-input v-model="submit.career"></el-input>
           </el-form-item>
           <el-form-item label="婚姻状况：">
-            <el-select style="width: 100%;"></el-select>
+            <el-select v-model="submit.marital" style="width: 100%;">
+              <el-option label="未婚" value="未婚"></el-option>
+              <el-option label="已婚" value="已婚"></el-option>
+            </el-select>
           </el-form-item>
         </el-form>
       </el-card>
@@ -73,11 +113,11 @@ export default {
         </template>
         <el-form :label-position="'left'" label-width="90px">
           <el-form-item label="证明期限">
-            <el-date-picker style="width: 100%"></el-date-picker>
+            <el-date-picker v-model="submit.period" style="width: 100%"></el-date-picker>
           </el-form-item>
         </el-form>
       </el-card>
-      <el-button class="submit">登记</el-button>
+      <el-button class="submit" @click="submitData">登记</el-button>
     </div>
   </el-scrollbar>
 </template>
@@ -90,5 +130,7 @@ export default {
 
 .submit {
   margin-left: 40%;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 </style>

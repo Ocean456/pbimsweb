@@ -3,10 +3,6 @@ import {defineComponent} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
-
-const api = axios.create({
-  baseURL: 'http://localhost:3000/api'
-})
 const spring = axios.create({
   baseURL: 'http://localhost:8080/api/identity'
 })
@@ -49,14 +45,14 @@ export default defineComponent({
       this.getPageData()
     },
     async searchData() {
-      await spring.get(`/search`,{params:{type:this.select,index:this.keyword}})
+      await spring.get(`/search`, {params: {type: this.select, index: this.keyword}})
           .then(response => {
             this.totalData = response.data;
           })
       this.getPageData()
     },
     deleteData(id) {
-      spring.delete('/delete', {data: {id: id}})
+      spring.delete('/delete', {params: {id: id}})
           .then(response => {
             ElMessage({
               message: response.data,
@@ -142,10 +138,10 @@ export default defineComponent({
     <h3>身份信息管理</h3>
     <el-input v-model="keyword" placeholder="输入" style="width: 100%; max-width: 1050px" @keyup.enter="searchData">
       <template #prepend>
-        <el-select v-model="select"  style="width: 115px">
+        <el-select v-model="select" style="width: 115px">
           <el-option label="身份证号" value="id"></el-option>
-          <el-option  label="姓名" value="name"></el-option>
-          <el-option  label="地址" value="address"></el-option>
+          <el-option label="姓名" value="name"></el-option>
+          <el-option label="地址" value="address"></el-option>
         </el-select>
       </template>
       <template #append>
@@ -168,7 +164,7 @@ export default defineComponent({
       <el-table-column label="地址" prop="address" width="280"></el-table-column>
       <el-table-column align="center" width="150">
         <template #header>
-          <el-button text @click="dialog=true">添加</el-button>
+          <el-button size="small" text @click="dialog=true">添加</el-button>
         </template>
         <template #default="scope">
           <el-button size="small" type="primary" @click="editDialog(scope.row)">编辑</el-button>
@@ -236,7 +232,10 @@ export default defineComponent({
         <el-input v-model="editRow.name"></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-input v-model="editRow.gender"></el-input>
+        <el-select v-model="editRow.gender" style="width: 100%">
+          <el-option label="男" value="男"></el-option>
+          <el-option label="女" value="女"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="民族">
         <el-input v-model="editRow.nation"></el-input>

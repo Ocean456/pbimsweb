@@ -1,5 +1,13 @@
+<script lang="ts" setup>
+import {useToggle} from '@vueuse/shared'
+import {useDark} from "@vueuse/core";
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
+</script>
+
 <template>
-  <div>
-    <h3>系统设置</h3>
-  </div>
+  <el-button @click="toggleDark()">
+    <span >{{ isDark ? 'Dark' : 'Light' }}</span>
+  </el-button>
 </template>

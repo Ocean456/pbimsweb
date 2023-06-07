@@ -61,8 +61,9 @@ router.beforeEach((to, from, next) => {
     if (requiresAuth && !loggedIn) {
         if (from.fullPath !== '/') {
             ElMessage.warning("请先登录");
+        }else {
+            next('/login');
         }
-        next('/login');
     } else {
         next();
     }
