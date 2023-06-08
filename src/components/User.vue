@@ -55,16 +55,6 @@ export default {
     }
   },
   methods: {
-    async submitIdentity() {
-      await api.post('/identity/submit', this.info)
-          .then(response => {
-            ElNotification({
-              title: response.data,
-              message: '个人信息待审核,请稍后重新加载界面',
-              type: 'success'
-            })
-          })
-    },
     load() {
       api.get('/identity/personal', {params: {username: this.username}})
           .then(response => {
@@ -108,18 +98,7 @@ export default {
           })
       this.checkCertify()
     },
-    checkIdentity() {
-      api.get('/identity/get', {params: {id: this.info.id}})
-          .then(response => {
-            this.existModification = 1
-            this.info.status = response.data.status
-            this.info.address = response.data.address
-            this.info.checkDisable = true
-          })
-          .catch(error => {
-            ElMessage.warning("服务器异常")
-          })
-    },
+
     checkCertify() {
       api.get('/issuance/get', {params: {id: this.certify.id, type: this.certify.type}})
           .then(response => {

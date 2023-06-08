@@ -38,7 +38,7 @@
               </el-icon>
               <el-text>户籍信息</el-text>
             </el-menu-item>
-            <el-menu-item index="/certify">
+            <el-menu-item index="/resident">
               <el-icon>
                 <Avatar/>
               </el-icon>
