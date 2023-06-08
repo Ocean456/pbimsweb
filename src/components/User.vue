@@ -55,8 +55,8 @@ export default {
     }
   },
   methods: {
-    submitIdentity() {
-      api.post('/identity/submit', this.info)
+    async submitIdentity() {
+      await api.post('/identity/submit', this.info)
           .then(response => {
             ElNotification({
               title: response.data,
@@ -73,8 +73,9 @@ export default {
             this.migrate.id = this.info.id
             this.migrate.old = this.info.address
           })
+      this.checkIdentity()
     },
-    submitMigrate() {
+    async submitMigrate() {
       const data = {
         id: this.migrate.id,
         address: this.migrate.address,
@@ -82,7 +83,7 @@ export default {
         reason: this.migrate.reason,
         status: 1
       }
-      api.post('/migrate/add', data)
+      await api.post('/migrate/add', data)
           .then(response => {
             ElMessage.success(response.data)
           })
@@ -200,15 +201,16 @@ export default {
               />
             </el-form-item>
             <el-form-item label="地址">
-              <el-input :disabled="this.info.checkDisable" v-model="info.address" style="width: 95%; "></el-input>
+              <el-input v-model="info.address" :disabled="this.info.checkDisable" style="width: 95%; "></el-input>
             </el-form-item>
           </el-form>
           <div class="buttonBox" style="display: flex">
             <el-button v-if="!existModification" @click="checkIdentity">查看申请</el-button>
-            <el-text v-if="existModification &&info.status===0">申请成功</el-text>
-            <el-text v-if="existModification &&info.status===1">申请审核中</el-text>
-            <el-text v-if="existModification &&info.status===2">申请驳回</el-text>
-            <el-text v-if="existModification &&info.status==null">未查询到信息</el-text>
+            <el-text v-if="existModification &&info.status===0" class="tip1" type="success">申请成功</el-text>
+            <el-text v-if="existModification &&info.status===1" class="tip2" type="info">申请审核中</el-text>
+            <el-text v-if="existModification &&info.status===2" class="tip3" type="danger">申请驳回</el-text>
+            <el-text v-if="existModification &&info.status===undefined" class="tip4" type="danger">未查询到信息
+            </el-text>
             <div style="flex-grow: 1"></div>
             <el-button v-if="existModification" @click="resetIdentity">重置</el-button>
             <el-button @click="submitIdentity">提交申请</el-button>
@@ -249,10 +251,11 @@ export default {
             </el-form-item>
             <div class="buttonBox" style="display: flex">
               <el-button v-if="!existCertify" @click="checkCertify">查看申请</el-button>
-              <el-text v-if="existCertify &&certify.status===0">申请成功</el-text>
-              <el-text v-if="existCertify &&certify.status===1">申请审核中</el-text>
-              <el-text v-if="existCertify &&certify.status===2">申请驳回</el-text>
-              <el-text v-if="existCertify &&certify.status==null">未查询到信息</el-text>
+              <el-text v-if="existCertify &&certify.status===0" class="tip1" type="success">申请成功</el-text>
+              <el-text v-if="existCertify &&certify.status===1" class="tip2" type="info">申请审核中</el-text>
+              <el-text v-if="existCertify &&certify.status===2" class="tip3" type="danger">申请驳回</el-text>
+              <el-text v-if="existCertify &&certify.status===undefined" class="tip4" type="warning">未查询到信息
+              </el-text>
               <div style="flex-grow: 1"></div>
               <el-button v-if="existCertify" @click="resetCertify">重置</el-button>
               <el-button @click="submitCertify">提交申请</el-button>
@@ -290,10 +293,11 @@ export default {
             </el-form-item>
             <div class="buttonBox" style="display: flex">
               <el-button v-if="!existMigrate" @click="checkMigrate">查看申请</el-button>
-              <el-text v-if="existMigrate &&migrate.status===0">申请成功</el-text>
-              <el-text v-if="existMigrate &&migrate.status===1">申请审核中</el-text>
-              <el-text v-if="existMigrate &&migrate.status===2">未查询到信息</el-text>
-              <el-text v-if="existMigrate &&migrate.status===null">未查询到信息</el-text>
+              <el-text v-if="existMigrate &&migrate.status===0" class="tip1" type="success">申请成功</el-text>
+              <el-text v-if="existMigrate &&migrate.status===1" class="tip2" type="info">申请审核中</el-text>
+              <el-text v-if="existMigrate &&migrate.status===2" class="tip3" type="danger">申请驳回</el-text>
+              <el-text v-if="existMigrate &&migrate.status===undefined" class="tip4" type="warning">未查询到信息
+              </el-text>
               <div style="flex-grow: 1"></div>
               <el-button @click="resetMigrate">重置</el-button>
               <el-button @click="submitMigrate">提交申请</el-button>

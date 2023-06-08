@@ -176,6 +176,7 @@ export default {
 </script>
 
 <style>
+
 #logo {
   user-select: none;
   pointer-events: none;
