@@ -13,7 +13,7 @@ import Search from "../components/Search.vue"
 import Issue from "../components/Issue.vue";
 import Population from "../components/Population.vue";
 import Migrate from "../components/Migrate.vue";
-import Certify from "../components/Resident.vue";
+import Resident from "../components/Resident.vue";
 import Statistics from "../components/Statistics.vue";
 import store from "../store";
 import {ElMessage} from "element-plus";
@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
     {path: '/population', component: Population, meta: {requiresAuth: true}},
     {path: '/migrate', component: Migrate, meta: {requiresAuth: true}},
     {path: '/search', component: Search, meta: {requiresAuth: true}},
-    {path: '/certify', component: Certify, meta: {requiresAuth: true}},
+    {path: '/resident', component: Resident, meta: {requiresAuth: true}},
     {path: '/statistics', component: Statistics, meta: {requiresAuth: true}},
 ];
 

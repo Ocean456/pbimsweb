@@ -19,24 +19,27 @@ export default {
     }
   },
   methods: {
-    register() {
+    async register() {
       if (this.form.username && this.form.password && this.form.password == this.form.again && this.form.id) {
-        api.post('/register', {
+        await api.post('/register', {
           username: this.form.username,
           password: this.form.password,
           id: this.form.id
-        }).then(response => {
+        }).then(async response => {
           ElMessage({
             type: "success",
             message: response.data
           })
-          store.dispatch('login', {username: this.form.username, password: this.form.password})
+          setTimeout(await store.dispatch('login', {username: this.form.username, password: this.form.password}), 3000)
+          ElMessage.success("登录成功")
         }).catch(error => {
           ElMessage({
             type: "error",
             message: error.response.data
           })
         })
+      } else {
+        ElMessage.warning("请完成表单")
       }
     },
     back() {
