@@ -8,6 +8,6 @@ const toggleDark = useToggle(isDark)
 
 <template>
   <el-button @click="toggleDark()">
-    <span >{{ isDark ? 'Light': 'Dark' }}</span>
+    <span >{{ isDark ? '白色' : '黑色' }}</span>
   </el-button>
 </template>

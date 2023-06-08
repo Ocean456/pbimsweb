@@ -1,6 +1,6 @@
 <script>
 import store from "../store/index.ts";
-import {ElMessage, ElNotification} from "element-plus";
+import {ElMessage} from "element-plus";
 import axios from 'axios'
 import {mapGetters} from "vuex";
 
@@ -27,9 +27,6 @@ export default {
         nation: '',
         birthday: '',
         address: '',
-        status: 0,
-        checkDisable: false
-
       },
       migrate: {
         id: '',
@@ -94,7 +91,7 @@ export default {
             ElMessage.success(response.data);
           })
           .catch(error => {
-            ElMessage.warning("添加失败")
+            ElMessage.warning(error)
           })
       this.checkCertify()
     },
@@ -109,7 +106,7 @@ export default {
             this.certify.checkDisable = true
           })
           .catch(error => {
-            ElMessage.warning("服务器异常")
+            ElMessage.warning(error)
           })
     },
     checkMigrate() {
@@ -123,7 +120,7 @@ export default {
             this.migrate.checkDisable = true
           })
           .catch(error => {
-            ElMessage.warning("服务器异常")
+            ElMessage.warning(error)
           })
     },
     resetCertify() {
@@ -134,10 +131,6 @@ export default {
       this.existMigrate = 0
       this.migrate.checkDisable = false
     },
-    resetIdentity() {
-      this.existModification = 0
-      this.info.checkDisable = false
-    }
   },
   mounted() {
     this.load();
@@ -152,7 +145,7 @@ export default {
     <el-tabs v-model="active" class="tabs">
       <el-tab-pane label="信息登记" name="info">
         <el-card class="card">
-          <h3 class="Personal">居民信息登记</h3>
+          <h3 class="Personal">居民信息查看</h3>
           <el-form class="user-form" label-position="right" label-width="100px">
             <el-form-item label="身份证号">
               <el-input v-model="info.id" disabled style="width: 95%;"></el-input>
@@ -179,20 +172,9 @@ export default {
               />
             </el-form-item>
             <el-form-item label="地址">
-              <el-input v-model="info.address" :disabled="this.info.checkDisable" style="width: 95%; "></el-input>
+              <el-input v-model="info.address" disabled style="width: 95%; "></el-input>
             </el-form-item>
           </el-form>
-          <div class="buttonBox" style="display: flex">
-            <el-button v-if="!existModification" @click="checkIdentity">查看申请</el-button>
-            <el-text v-if="existModification &&info.status===0" class="tip1" type="success">申请成功</el-text>
-            <el-text v-if="existModification &&info.status===1" class="tip2" type="info">申请审核中</el-text>
-            <el-text v-if="existModification &&info.status===2" class="tip3" type="danger">申请驳回</el-text>
-            <el-text v-if="existModification &&info.status===undefined" class="tip4" type="danger">未查询到信息
-            </el-text>
-            <div style="flex-grow: 1"></div>
-            <el-button v-if="existModification" @click="resetIdentity">重置</el-button>
-            <el-button @click="submitIdentity">提交申请</el-button>
-          </div>
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="证件申请" name="card">
@@ -285,6 +267,9 @@ export default {
       </el-tab-pane>
       <el-tab-pane label="系统设置" name="setting">
         <h1>系统设置</h1>
+        <el-button @click="toggleDark()">
+          <span>{{ isDark ? '白色' : '黑色' }}</span>
+        </el-button>
         <el-button @click="this.store.dispatch('logout')">退出登录</el-button>
       </el-tab-pane>
     </el-tabs>
@@ -311,3 +296,10 @@ h3 {
 }
 
 </style>
+<script setup>
+import {useToggle} from '@vueuse/shared'
+import {useDark} from "@vueuse/core";
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
+</script>

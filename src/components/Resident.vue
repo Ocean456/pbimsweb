@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import {ElMessage} from "element-plus";
 
 const info = axios.create({
   baseURL: 'http://localhost:8080/api/resident'
@@ -24,22 +25,14 @@ export default {
             this.totalData = response.data
           })
     },
-    async confirm(row) {
-      const status = 0
-      await info.put('/handle', {
-        id: row.id,
-        period: row.period,
-        status: status
-      })
-      this.loadData()
-    },
-    async refuse(row) {
-      const status = 2
-      await info.put('/handle', {
-        id: row.id,
-        period: row.period,
-        status: status
-      })
+    async deleteData(id) {
+      await info.delete('/delete', {params: {id: id}})
+          .then(response => {
+            ElMessage.success(response.data)
+          })
+          .catch(error => {
+            ElMessage.error(error)
+          })
       this.loadData()
     }
   },
@@ -50,38 +43,16 @@ export default {
 </script>
 
 <template>
-  <div class="migrate">
+  <div class="resident">
     <h3>居住证明管理</h3>
-    <el-table :data="totalData" border height="720" stripe style="width: 100%; max-width: 950px">
+    <el-table :data="totalData" border max-height="720" stripe style="width: 100%; max-width: 740px">
       <el-table-column label="身份证号" prop="id" width="180"></el-table-column>
       <el-table-column label="姓名" prop="name" width="100"></el-table-column>
       <el-table-column label="居住地址" prop="address" width="220"></el-table-column>
       <el-table-column label="期限至" prop="period" width="120"></el-table-column>
-      <el-table-column align="center" label="处理状态" prop="status" width="120">
+      <el-table-column align="center" label="操作" width="120">
         <template #default="scope">
-          <el-text v-if="scope.row.status===0" size="small" type="success">已完成</el-text>
-          <el-text v-if="scope.row.status===2" size="small" type="warning">已拒绝</el-text>
-          <el-text v-if="scope.row.status===1" size="small" type="info">未操作</el-text>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作" prop="status" width="210">
-        <template #default="scope">
-          <el-button
-              v-if="scope.row.status===1"
-              size="small" type="primary"
-              @click="confirm(scope.row)">确认
-          </el-button>
-          <el-button
-              v-if="scope.row.status===1"
-              size="small" type="primary"
-              @click="refuse(scope.row)">拒绝
-          </el-button>
-          <el-button
-              v-if="scope.row.status!==1"
-              size="small"
-              type="primary">已审批
-          </el-button>
-          <el-button size="small" type="danger">删除</el-button>
+          <el-button size="small" type="danger" @click="deleteData(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -74,12 +74,7 @@
               </el-icon>
               <el-text>迁移管理</el-text>
             </el-menu-item>
-            <el-menu-item index="/analysis">
-              <el-icon>
-                <DataAnalysis/>
-              </el-icon>
-              <el-text>数据分析</el-text>
-            </el-menu-item>
+
             <el-menu-item index="/export">
               <el-icon>
                 <DocumentChecked/>

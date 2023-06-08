@@ -2,7 +2,6 @@ import {createRouter, createWebHistory, RouteRecordRaw, Router} from "vue-router
 import Home from '../components/Home.vue'
 import Setting from '../components/Setting.vue'
 import Manage from "../components/Identity.vue";
-import Analysis from "../components/Analysis.vue";
 import Export from "../components/Export.vue";
 import Login from '../components/Login.vue'
 import User from '../components/User.vue'
@@ -22,7 +21,6 @@ const routes: Array<RouteRecordRaw> = [
     {path: '/', component: Home, meta: {requiresAuth: true}},
     {path: '/setting', component: Setting, meta: {requiresAuth: true}},
     {path: '/identity', component: Manage, meta: {requiresAuth: true}},
-    {path: '/analysis', component: Analysis, meta: {requiresAuth: true}},
     {path: '/export', component: Export, meta: {requiresAuth: true}},
     {path: '/login', component: Login, meta: {requiresAuth: false}},
     {path: '/user', component: User, meta: {requiresAuth: true}},

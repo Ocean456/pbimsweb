@@ -57,7 +57,7 @@ export default {
 <template>
   <div class="migrate">
     <h3>迁移信息管理</h3>
-    <el-table :data="totalData" border height="720" stripe style="width: 100%; max-width: 1390px">
+    <el-table :data="totalData" border max-height="720" stripe style="width: 100%; max-width: 1390px">
       <el-table-column label="身份证号" prop="id" width="180"></el-table-column>
       <el-table-column label="姓名" prop="name" width="100"></el-table-column>
       <el-table-column label="迁出地址" prop="oldAddress" width="220"></el-table-column>
