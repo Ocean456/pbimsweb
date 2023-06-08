@@ -1,6 +1,7 @@
 <script lang="ts">
 import axios from "axios";
 import router from "../router";
+import store from "../store";
 import {ElMessage} from "element-plus";
 
 const api = axios.create({
@@ -29,6 +30,7 @@ export default {
             type: "success",
             message: response.data
           })
+          store.dispatch('login', {username: this.form.username, password: this.form.password})
         }).catch(error => {
           ElMessage({
             type: "error",
@@ -57,10 +59,10 @@ export default {
           <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码" show-password ></el-input>
+          <el-input v-model="form.password" placeholder="请输入密码" show-password></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password">
-          <el-input v-model="form.again" placeholder="请再次输入密码" show-password ></el-input>
+          <el-input v-model="form.again" placeholder="请再次输入密码" show-password></el-input>
         </el-form-item>
 
         <el-form-item label="身份证号">

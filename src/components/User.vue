@@ -73,7 +73,6 @@ export default {
             this.migrate.id = this.info.id
             this.migrate.old = this.info.address
           })
-      this.checkIdentity()
     },
     async submitMigrate() {
       const data = {

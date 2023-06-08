@@ -13,7 +13,7 @@ import Search from "../components/Search.vue"
 import Issue from "../components/Issue.vue";
 import Population from "../components/Population.vue";
 import Migrate from "../components/Migrate.vue";
-import Certify from "../components/Certify.vue";
+import Certify from "../components/Resident.vue";
 import Statistics from "../components/Statistics.vue";
 import store from "../store";
 import {ElMessage} from "element-plus";

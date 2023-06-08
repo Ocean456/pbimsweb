@@ -1,86 +1,93 @@
-<template>
-  <div class="login-container">
-    <el-card class="login-card">
-      <h1 class="login-title">居民登录</h1>
-      <el-form class="login-form" label-position="top">
-        <el-form-item label="用户名">
-          <el-input v-model="username" placeholder="请输入用户名"></el-input>
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="password" placeholder="请输入密码" @keyup.enter="login"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="login-button" type="primary" @click="login">登录</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="register-button" type="info" @click="register">注册</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
-  </div>
-</template>
-
 <script>
+import axios from "axios";
+
+const info = axios.create({
+  baseURL: 'http://localhost:8080/api/resident'
+})
 
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-    };
+      totalData: [{
+        id: '',
+        name: '',
+        address: '',
+        period: '',
+        status: ''
+      }]
+    }
+  },
+  methods: {
+    loadData() {
+      info.get('/search')
+          .then(response => {
+            this.totalData = response.data
+          })
+    },
+    async confirm(row) {
+      const status = 0
+      await info.put('/handle', {
+        id: row.id,
+        period: row.period,
+        status: status
+      })
+      this.loadData()
+    },
+    async refuse(row) {
+      const status = 2
+      await info.put('/handle', {
+        id: row.id,
+        period: row.period,
+        status: status
+      })
+      this.loadData()
+    }
+  },
+  mounted() {
+    this.loadData()
   }
 }
 </script>
 
+<template>
+  <div class="migrate">
+    <h3>居住证明管理</h3>
+    <el-table :data="totalData" border height="720" stripe style="width: 100%; max-width: 950px">
+      <el-table-column label="身份证号" prop="id" width="180"></el-table-column>
+      <el-table-column label="姓名" prop="name" width="100"></el-table-column>
+      <el-table-column label="居住地址" prop="address" width="220"></el-table-column>
+      <el-table-column label="期限至" prop="period" width="120"></el-table-column>
+      <el-table-column align="center" label="处理状态" prop="status" width="120">
+        <template #default="scope">
+          <el-text v-if="scope.row.status===0" size="small" type="success">已完成</el-text>
+          <el-text v-if="scope.row.status===2" size="small" type="warning">已拒绝</el-text>
+          <el-text v-if="scope.row.status===1" size="small" type="info">未操作</el-text>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="操作" prop="status" width="210">
+        <template #default="scope">
+          <el-button
+              v-if="scope.row.status===1"
+              size="small" type="primary"
+              @click="confirm(scope.row)">确认
+          </el-button>
+          <el-button
+              v-if="scope.row.status===1"
+              size="small" type="primary"
+              @click="refuse(scope.row)">拒绝
+          </el-button>
+          <el-button
+              v-if="scope.row.status!==1"
+              size="small"
+              type="primary">已审批
+          </el-button>
+          <el-button size="small" type="danger">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
 
 <style scoped>
-* {
-  user-select: none;
-}
-
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  width: 65vw;
-  margin: auto;
-}
-
-.login-card {
-  width: 400px;
-  padding: 24px;
-  backdrop-filter: blur(px);
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-.login-title {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 24px;
-}
-
-.login-form {
-  width: 100%;
-}
-
-.login-button {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.register-button {
-  width: 100%;
-}
-
-
-</style>
-<style>
-body {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-
-}
 
 </style>
