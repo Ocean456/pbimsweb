@@ -1,13 +1,30 @@
 <script lang="ts" setup>
-import {useToggle} from '@vueuse/shared'
 import {useDark} from "@vueuse/core";
 
 const isDark = useDark()
-const toggleDark = useToggle(isDark)
 </script>
 
 <template>
-  <el-button @click="toggleDark()">
-    <span >{{ isDark ? '白色' : '黑色' }}</span>
-  </el-button>
+  <div id="setting">
+    <h3>系统设置</h3>
+    <div>
+      <el-text size="large">一、寻找帮助：</el-text>
+      <el-button @click="help">添加客服QQ</el-button>
+    </div>
+    <div>
+      <el-text size="large">二、暗黑模式：</el-text>
+      <el-switch v-model="isDark"></el-switch>
+    </div>
+
+  </div>
 </template>
+
+<script lang="ts">
+export default {
+  methods: {
+    help() {
+      window.location.replace("tencent://message/?uin=1624133013&Site=&Menu=yes")
+    }
+  }
+}
+</script>

@@ -10,9 +10,6 @@ const api = axios.create({
 
 export default {
   computed: {
-    store() {
-      return store
-    },
     ...mapGetters(["currentUser", "isLoggedIn", "MenuUI"]),
     username() {
       return this.currentUser ? this.currentUser.username : "";
@@ -52,6 +49,9 @@ export default {
     }
   },
   methods: {
+    help() {
+      window.location.replace("tencent://message/?uin=1624133013&Site=&Menu=yes")
+    },
     load() {
       api.get('/identity/personal', {params: {username: this.username}})
           .then(response => {
@@ -270,6 +270,7 @@ export default {
         <el-button @click="toggleDark()">
           <span>{{ isDark ? '白色' : '黑色' }}</span>
         </el-button>
+        <el-button @click="help">添加客服QQ</el-button>
         <el-button @click="this.store.dispatch('logout')">退出登录</el-button>
       </el-tab-pane>
     </el-tabs>
