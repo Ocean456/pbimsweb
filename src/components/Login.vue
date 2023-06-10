@@ -50,7 +50,7 @@ export default {
     },
   },
   mounted() {
-    document.body.style.backgroundImage = 'url("public/wave.svg")'
+    document.body.style.backgroundImage = 'url("/wave.svg")'
   }
 };
 </script>
