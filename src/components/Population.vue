@@ -21,7 +21,6 @@ export default {
         education: '',
         career: '',
         marital: '未婚',
-        period: new Date()
       }
     }
   },
@@ -36,13 +35,11 @@ export default {
           })
           .catch(error => {
             ElMessage({
-              message: error,
+              message: error.response.data,
               type: 'warning'
             })
           })
     }
-  },
-  mounted() {
   }
 }
 </script>
@@ -104,16 +101,6 @@ export default {
               <el-option label="未婚" value="未婚"></el-option>
               <el-option label="已婚" value="已婚"></el-option>
             </el-select>
-          </el-form-item>
-        </el-form>
-      </el-card>
-      <el-card class="card certify" shadow="hover">
-        <template #header>
-          <el-text>居住登记</el-text>
-        </template>
-        <el-form :label-position="'left'" label-width="90px">
-          <el-form-item label="证明期限">
-            <el-date-picker v-model="submit.period" style="width: 100%"></el-date-picker>
           </el-form-item>
         </el-form>
       </el-card>

@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import {ElMessage} from "element-plus";
 
 const info = axios.create({
   baseURL: 'http://localhost:8080/api/migrate'
@@ -13,8 +14,8 @@ export default {
         address: '',
         reason: '',
         status: '',
-        name:'',
-        oldAddress:''
+        name: '',
+        oldAddress: ''
       }]
     }
   },
@@ -25,27 +26,47 @@ export default {
             this.totalData = response.data
           })
     },
-    async confirm(row) {
+    confirm(row) {
       const status = 0
-      await info.put('/handle', {
+      info.put('/handle', {
         id: row.id,
         address: row.address,
         reason: row.reason,
         date: row.date,
         status: status,
+      }).then(response => {
+        ElMessage.success(response.data)
+        this.loadData()
       })
-      this.loadData()
     },
-    async refuse(row) {
+    refuse(row) {
       const status = 2
-      await info.put('/handle', {
+      info.put('/handle', {
         id: row.id,
         address: row.address,
         reason: row.reason,
         date: row.date,
         status: status
+      }).then(response => {
+        ElMessage.success(response.data)
+        this.loadData()
       })
-      this.loadData()
+    },
+    deleteMigrate(row) {
+      info.delete('/delete', {params: {id: row.id}})
+          .then(response => {
+            ElMessage.success(response.data)
+            this.loadData()
+          })
+          .catch(error => {
+            ElMessage.error(error.response.data)
+          })
+    },
+    handleOld(row) {
+      if (row.status === 0) {
+        return "已迁出"
+      } else
+        return row.oldAddress
     }
   },
   mounted() {
@@ -60,7 +81,9 @@ export default {
     <el-table :data="totalData" border max-height="720" stripe style="width: 100%; max-width: 1390px">
       <el-table-column label="身份证号" prop="id" width="180"></el-table-column>
       <el-table-column label="姓名" prop="name" width="100"></el-table-column>
-      <el-table-column label="迁出地址" prop="oldAddress" width="220"></el-table-column>
+      <el-table-column label="迁出地址" prop="oldAddress" width="220">
+        <template #default="scope">{{ handleOld(scope.row) }}</template>
+      </el-table-column>
       <el-table-column label="迁往地址" prop="address" width="220"></el-table-column>
       <el-table-column label="迁移原因" prop="reason" width="220"></el-table-column>
       <el-table-column label="迁移时间" prop="date" width="120"></el-table-column>
@@ -88,7 +111,7 @@ export default {
               size="small"
               type="primary">已审批
           </el-button>
-          <el-button size="small" type="danger">删除</el-button>
+          <el-button size="small" type="danger" @click="deleteMigrate(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

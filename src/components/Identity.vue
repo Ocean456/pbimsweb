@@ -3,7 +3,7 @@ import {defineComponent} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
-const spring = axios.create({
+const api = axios.create({
   baseURL: 'http://localhost:8080/api/identity'
 })
 export default defineComponent({
@@ -37,22 +37,28 @@ export default defineComponent({
     }
   },
   methods: {
-    async loadingData() {
-      await spring.get(`/search`)
+    loadingData() {
+      api.get(`/search`)
           .then(response => {
             this.totalData = response.data;
+            this.getPageData()
           })
-      this.getPageData()
+          .catch(error => {
+            ElMessage.error(error.response.data)
+          })
     },
-    async searchData() {
-      await spring.get(`/search`, {params: {type: this.select, index: this.keyword}})
+    searchData() {
+      api.get(`/search`, {params: {type: this.select, index: this.keyword}})
           .then(response => {
             this.totalData = response.data;
+            this.getPageData()
           })
-      this.getPageData()
+          .catch(error => {
+            ElMessage.error(error.response.data)
+          })
     },
     deleteData(id) {
-      spring.delete('/delete', {params: {id: id}})
+      api.delete('/delete', {params: {id: id}})
           .then(response => {
             ElMessage({
               message: response.data,
@@ -62,43 +68,45 @@ export default defineComponent({
           })
           .catch(error => {
             ElMessage({
-              message: error,
+              message: error.response.data,
               type: 'warning'
             })
           })
       this.handleCurrentChange(this.currentPage)
     },
-    async addData() {
+    addData() {
       if (this.add.id != '' && this.add.gender != '' && this.add.nation != '' && this.add.address != '') {
-        await spring.post('/add', this.add)
+        api.post('/add', this.add)
             .then(response => {
               ElMessage({
                 message: response.data,
                 type: 'success'
               })
+              this.searchData();
+              this.add = {address: "", gender: "", id: "", name: "", nation: "", birthday: new Date()}
+              this.dialog = false
+              this.handleCurrentChange(this.currentPage)
             })
             .catch(error => {
               ElMessage({
-                message: error,
+                message: error.response.data,
                 type: 'warning'
               })
             })
-        await this.searchData();
-        this.add = {address: "", gender: "", id: "", name: "", nation: "", birthday: new Date()}
-        this.dialog = false
-        this.handleCurrentChange(this.currentPage)
       } else {
         ElMessage.error("请完成表单")
       }
-
     },
-    async editData() {
-      await spring.put('/edit', this.editRow)
+    editData() {
+      api.put('/edit', this.editRow)
           .then(response => {
             ElMessage({
               message: response.data,
               type: 'success'
             })
+            this.searchData();
+            this.edit = false
+            this.handleCurrentChange(this.currentPage)
           })
           .catch(error => {
             ElMessage({
@@ -106,9 +114,6 @@ export default defineComponent({
               type: 'warning'
             })
           })
-      await this.searchData();
-      this.edit = false
-      this.handleCurrentChange(this.currentPage)
     },
     getPageData() {
       this.total = this.totalData.length
@@ -150,13 +155,12 @@ export default defineComponent({
     </el-input>
     <el-table
         :data="pageData"
-        :default-sort="{prop:'card_id',order:'descending'}"
         border height="720"
         stripe
         style="width: 1050px;">
       <el-table-column
           label="身份证号"
-          prop="id" sortable style="padding: 0" width="180"></el-table-column>
+          prop="id" style="padding: 0" width="180"></el-table-column>
       <el-table-column label="姓名" prop="name" width="100"></el-table-column>
       <el-table-column label="性别" prop="gender" width="60"></el-table-column>
       <el-table-column label="民族" prop="nation" width="100"></el-table-column>
@@ -190,7 +194,6 @@ export default defineComponent({
         @current-change="handleCurrentChange">
     </el-pagination>
   </div>
-
   <el-dialog v-model="dialog" title="添加" width="40%">
     <el-form :model="add" label-width="80px">
       <el-form-item label="身份证号">
@@ -199,11 +202,10 @@ export default defineComponent({
       <el-form-item label="姓名">
         <el-input v-model="add.name" placeholder="请输入姓名"></el-input>
       </el-form-item>
-
       <el-form-item label="性别">
         <el-select v-model="add.gender" placeholder="请选择性别" style="width: 100%;">
-          <el-option label="男" value="1"></el-option>
-          <el-option label="女" value="2"></el-option>
+          <el-option label="男" value="男"></el-option>
+          <el-option label="女" value="女"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="民族">
@@ -215,7 +217,6 @@ export default defineComponent({
       <el-form-item label="地址">
         <el-input v-model="add.address" placeholder="请输入地址"></el-input>
       </el-form-item>
-
     </el-form>
     <template #footer>
       <el-button class="button" @click="dialog = false">取消</el-button>
@@ -262,7 +263,6 @@ export default defineComponent({
   margin-left: 10%;
 }
 
-
 .button {
   margin-top: 10px;
 }
@@ -270,7 +270,5 @@ export default defineComponent({
 .p {
   margin-top: 30px;
   margin-left: 20%;
-
 }
-
 </style>

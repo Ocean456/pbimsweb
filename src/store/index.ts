@@ -55,11 +55,11 @@ export default createStore({
                 authority: 0,
             });
             commit('setMenu', false)
+            // noinspection JSIgnoredPromiseFromCall
             router.push('/login')
         },
         checkLogin({commit, state}) {
             const user = localStorage.getItem('user');
-            // const authority = localStorage.getItem('authority');
             if (user) {
                 commit('setLoggedIn', true);
                 commit('setUser', JSON.parse(user));

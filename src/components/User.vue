@@ -45,7 +45,13 @@ export default {
       active: 'info',
       existCertify: 0,
       existMigrate: 0,
-      existModification: 0
+      existModification: 0,
+      modify: false,
+      form: {
+        oPassword: '',
+        nPassword: '',
+        aPassword: ''
+      }
     }
   },
   methods: {
@@ -61,7 +67,7 @@ export default {
             this.migrate.old = this.info.address
           })
     },
-    async submitMigrate() {
+    submitMigrate() {
       const data = {
         id: this.migrate.id,
         address: this.migrate.address,
@@ -69,16 +75,16 @@ export default {
         reason: this.migrate.reason,
         status: 1
       }
-      await api.post('/migrate/add', data)
+      api.post('/migrate/add', data)
           .then(response => {
             ElMessage.success(response.data)
+            this.checkMigrate()
           })
           .catch(error => {
-            ElMessage.warning(error)
+            ElMessage.warning(error.response.data)
           })
-      this.checkMigrate()
     },
-    async submitCertify() {
+    submitCertify() {
       const data = {
         id: this.certify.id,
         type: this.certify.type,
@@ -86,16 +92,16 @@ export default {
         period: this.certify.period,
         status: 1
       }
-      await api.post('/issuance/add', data)
+      api.post('/issuance/add', data)
           .then(response => {
             ElMessage.success(response.data);
+            this.checkCertify()
           })
           .catch(error => {
-            ElMessage.warning(error)
+            ElMessage.warning(error.response.data)
           })
-      this.checkCertify()
-    },
 
+    },
     checkCertify() {
       api.get('/issuance/get', {params: {id: this.certify.id, type: this.certify.type}})
           .then(response => {
@@ -131,6 +137,25 @@ export default {
       this.existMigrate = 0
       this.migrate.checkDisable = false
     },
+    submitPassword() {
+
+      if (this.form.nPassword === this.form.aPassword && this.form.aPassword !== '' && this.form.oPassword !== '') {
+        const user = {
+          username: this.username,
+          password: this.form.nPassword,
+          old: this.form.oPassword
+        };
+
+        api.put('/edit', user)
+            .then(response => {
+              ElMessage.success(response.data)
+              this.modify = false
+            })
+            .catch(error => {
+              ElMessage.error(error.response.data)
+            })
+      } else ElMessage.error("请正确填写表单")
+    }
   },
   mounted() {
     this.load();
@@ -267,11 +292,37 @@ export default {
       </el-tab-pane>
       <el-tab-pane label="系统设置" name="setting">
         <h1>系统设置</h1>
-        <el-button @click="toggleDark()">
-          <span>{{ isDark ? '白色' : '黑色' }}</span>
-        </el-button>
-        <el-button @click="help">添加客服QQ</el-button>
-        <el-button @click="this.store.dispatch('logout')">退出登录</el-button>
+        <div>
+          <el-text size="large">一、寻找帮助：</el-text>
+          <el-button @click="help">添加客服QQ</el-button>
+        </div>
+        <div>
+          <el-text size="large">二、暗黑模式：</el-text>
+          <el-switch v-model="isDark"></el-switch>
+        </div>
+        <div>
+          <el-text size="large">三、密码修改：</el-text>
+          <el-button @click="this.modify=true">重置密码</el-button>
+        </div>
+        <el-button @click="store.dispatch('logout')">退出登录</el-button>
+        <el-dialog v-model="this.modify" width="30%">
+          <el-form :model="this.form" label-position="top">
+            <el-form-item label="原始密码:">
+              <el-input v-model="this.form.oPassword" placeholder="请输入你的原始密码"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码:">
+              <el-input v-model="this.form.nPassword" placeholder="请输入你的新密码"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码:">
+              <el-input v-model="form.aPassword" placeholder="请确认你的新密码"></el-input>
+            </el-form-item>
+            <div style="display: flex">
+              <el-button @click="this.modify=false">取消</el-button>
+              <div style="flex-grow: 1"></div>
+              <el-button @click="submitPassword">确认</el-button>
+            </div>
+          </el-form>
+        </el-dialog>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -298,9 +349,7 @@ h3 {
 
 </style>
 <script setup>
-import {useToggle} from '@vueuse/shared'
 import {useDark} from "@vueuse/core";
 
 const isDark = useDark()
-const toggleDark = useToggle(isDark)
 </script>

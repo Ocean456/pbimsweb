@@ -99,7 +99,7 @@ export default {
       this.editDialog = true
     },
     async update() {
-      spring.put("/edit", this.editData)
+      await spring.put("/edit", this.editData)
           .then(response => {
             ElMessage({
               type: "success",
@@ -247,7 +247,8 @@ export default {
         <el-input v-model="editData.nation" style="min-width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="出生日期">
-        <el-date-picker  value-format="yyyy-MM-dd" v-model="editData.birthday" style="min-width: 300px" type="date"></el-date-picker>
+        <el-date-picker v-model="editData.birthday" style="min-width: 300px" type="date"
+                        value-format="yyyy-MM-dd"></el-date-picker>
       </el-form-item>
       <el-form-item label="出生地">
         <el-input v-model="editData.birthplace" style="min-width: 300px"></el-input>
