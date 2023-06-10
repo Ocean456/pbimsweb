@@ -94,7 +94,6 @@ export default {
   width: 100%;
 }
 
-
 </style>
 <style>
 body {
@@ -102,5 +101,4 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
-
 </style>

@@ -25,27 +25,29 @@ export default {
             this.totalData = response.data
           })
     },
-    async confirm(row) {
+    confirm(row) {
       const status = 0
-      await info.put('/handle', {
+      info.put('/handle', {
         id: row.id,
         type: row.type,
         period: row.period,
         reason: row.reason,
         status: status
+      }).then(() => {
+        this.loadData()
       })
-      this.loadData()
     },
-    async refuse(row) {
+    refuse(row) {
       const status = 2
-      await info.put('/handle', {
+      info.put('/handle', {
         id: row.id,
         type: row.type,
         period: row.period,
         reason: row.reason,
         status: status
+      }).then(() => {
+        this.loadData()
       })
-      this.loadData()
     },
     handleType(type) {
       if (type === 'identity') {
@@ -56,15 +58,15 @@ export default {
         return '居住证明'
       }
     },
-    async deleteData(row) {
-      await info.delete('/delete', {params: {id: row.id, type: row.type}})
+    deleteData(row) {
+      info.delete('/delete', {params: {id: row.id, type: row.type}})
           .then(response => {
             ElMessage.success(response.data)
+            this.loadData()
           })
           .catch(error => {
             ElMessage.error(error)
           })
-      this.loadData()
     }
   },
   mounted() {

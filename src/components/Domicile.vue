@@ -67,13 +67,14 @@ export default {
           })
       this.getPageData()
     },
-    async search() {
-      await spring.get('/search', {params: {type: this.select, index: this.keyword}})
+    search() {
+      spring.get('/search', {params: {type: this.select, index: this.keyword}})
           .then(response => {
                 this.totalData = response.data
+                this.getPageData()
               }
           )
-      this.getPageData()
+
     },
     getPageData() {
       this.total = this.totalData.length
@@ -98,13 +99,16 @@ export default {
       this.editData = {...this.totalData[index]}
       this.editDialog = true
     },
-    async update() {
-      await spring.put("/edit", this.editData)
+    update() {
+      spring.put("/edit", this.editData)
           .then(response => {
             ElMessage({
               type: "success",
               message: response.data
             })
+            this.search();
+            this.editDialog = false
+            this.handleCurrentChange(this.currentPage)
           })
           .catch(error => {
             ElMessage({
@@ -112,9 +116,7 @@ export default {
               message: error
             })
           })
-      await this.search();
-      this.editDialog = false
-      this.handleCurrentChange(this.currentPage)
+
     },
     deleteData(id) {
       spring.delete('/delete', {params: {id: id}})
@@ -132,14 +134,18 @@ export default {
             })
           })
     },
-    async addData() {
+    addData() {
       if (this.submit.id != '' && this.submit.name != '' && this.submit.gender != '' && this.submit.nation != '' && this.submit.origin != '') {
-        await spring.post('/add', this.submit)
+        spring.post('/add', this.submit)
             .then(response => {
               ElMessage({
                 message: response.data,
                 type: 'success'
               })
+              this.search();
+              this.submit = {};
+              this.submitDialog = false
+              this.handleCurrentChange(this.currentPage)
             })
             .catch(error => {
               ElMessage({
@@ -147,14 +153,9 @@ export default {
                 type: 'warning'
               })
             })
-        await this.search();
-        this.submit = {};
-        this.submitDialog = false
-        this.handleCurrentChange(this.currentPage)
       } else {
         ElMessage.error("请完成表单")
       }
-
     },
   },
   mounted() {
@@ -247,8 +248,12 @@ export default {
         <el-input v-model="editData.nation" style="min-width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="出生日期">
-        <el-date-picker v-model="editData.birthday" style="min-width: 300px" type="date"
-                        value-format="yyyy-MM-dd"></el-date-picker>
+        <el-date-picker
+            v-model="editData.birthday"
+            style="min-width: 300px"
+            type="date"
+            value-format="yyyy-MM-dd">
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="出生地">
         <el-input v-model="editData.birthplace" style="min-width: 300px"></el-input>
@@ -268,13 +273,11 @@ export default {
       <el-form-item label="职业">
         <el-input v-model="editData.career" style="min-width: 300px"></el-input>
       </el-form-item>
-
     </el-form>
     <template #footer>
       <el-button @click="editDialog=false">取消</el-button>
       <el-button type="primary" @click="update">保存</el-button>
     </template>
-
   </el-dialog>
   <el-dialog v-model="submitDialog">
     <el-form :inline="true" :model="submit" label-width="80px">
@@ -314,18 +317,15 @@ export default {
       <el-form-item label="职业">
         <el-input v-model="submit.career" style="min-width: 300px"></el-input>
       </el-form-item>
-
     </el-form>
     <template #footer>
       <el-button @click="submitDialog=false">取消</el-button>
       <el-button type="primary" @click="addData">保存</el-button>
     </template>
-
   </el-dialog>
 </template>
 
 <style scoped>
-
 .p {
   margin-top: 30px;
   margin-left: 20%;

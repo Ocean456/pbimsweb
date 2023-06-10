@@ -12,7 +12,7 @@ import Papa from 'papaparse';
 import {ElMessage} from "element-plus";
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: 'http://localhost:8080/api'
 })
 export default {
   data() {
@@ -23,7 +23,7 @@ export default {
   methods: {
     async exportIdentity() {
       this.loading = true
-      await api.get('/api/identity/search')
+      await api.get('/identity/search')
           .then(response => {
             const data = response.data;
             const txt = Papa.unparse(data);
@@ -41,7 +41,7 @@ export default {
     },
     async exportDomicile() {
       this.loading = true
-      await api.get('/api/domicile/search')
+      await api.get('/domicile/search')
           .then(response => {
             const data = response.data;
             const txt = Papa.unparse(data);

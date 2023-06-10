@@ -25,15 +25,16 @@ export default {
             this.totalData = response.data
           })
     },
-    async deleteData(id) {
-      await info.delete('/delete', {params: {id: id}})
+    deleteData(id) {
+      info.delete('/delete', {params: {id: id}})
           .then(response => {
             ElMessage.success(response.data)
           })
           .catch(error => {
             ElMessage.error(error)
-          })
-      this.loadData()
+          }).then(() => {
+        this.loadData()
+      })
     }
   },
   mounted() {
